@@ -34,7 +34,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
     NSUInteger _currentPageIndex;
 	
     // Buttons
-    UIButton *_doneButton;
+    UIButton *_selectButton;
     
 	// Toolbar
 	UIToolbar *_toolbar;
@@ -574,23 +574,23 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
                       barMetrics:UIBarMetricsDefault];
     
     // Close Button
-    _doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_doneButton setFrame:[self frameForDoneButtonAtOrientation:currentOrientation]];
-    [_doneButton setAlpha:1.0f];
-    [_doneButton addTarget:self action:@selector(doneButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    _selectButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_selectButton setFrame:[self frameForDoneButtonAtOrientation:currentOrientation]];
+    [_selectButton setAlpha:1.0f];
+    [_selectButton addTarget:self action:@selector(selectButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     
     if(!_doneButtonImage) {
-        [_doneButton setTitleColor:[UIColor colorWithWhite:0.9 alpha:0.9] forState:UIControlStateNormal|UIControlStateHighlighted];
-        [_doneButton setTitle:IDMPhotoBrowserLocalizedStrings(@"Done") forState:UIControlStateNormal];
-        [_doneButton.titleLabel setFont:[UIFont boldSystemFontOfSize:11.0f]];
-        [_doneButton setBackgroundColor:[UIColor colorWithWhite:0.1 alpha:0.5]];
-        _doneButton.layer.cornerRadius = 3.0f;
-        _doneButton.layer.borderColor = [UIColor colorWithWhite:0.9 alpha:0.9].CGColor;
-        _doneButton.layer.borderWidth = 1.0f;
+        [_selectButton setTitleColor:[UIColor colorWithWhite:0.9 alpha:0.9] forState:UIControlStateNormal|UIControlStateHighlighted];
+        [_selectButton setTitle:IDMPhotoBrowserLocalizedStrings(@"Select") forState:UIControlStateNormal];
+        [_selectButton.titleLabel setFont:[UIFont boldSystemFontOfSize:11.0f]];
+        [_selectButton setBackgroundColor:[UIColor colorWithWhite:0.1 alpha:0.5]];
+        _selectButton.layer.cornerRadius = 3.0f;
+        _selectButton.layer.borderColor = [UIColor colorWithWhite:0.9 alpha:0.9].CGColor;
+        _selectButton.layer.borderWidth = 1.0f;
     }
     else {
-        [_doneButton setBackgroundImage:_doneButtonImage forState:UIControlStateNormal];
-        _doneButton.contentMode = UIViewContentModeScaleAspectFit;
+        [_selectButton setBackgroundImage:_doneButtonImage forState:UIControlStateNormal];
+        _selectButton.contentMode = UIViewContentModeScaleAspectFit;
     }
     
     UIImage *leftButtonImage = (_leftArrowImage == nil) ?
@@ -675,7 +675,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
     _visiblePages = nil;
     _recycledPages = nil;
     _toolbar = nil;
-    _doneButton = nil;
+    _selectButton = nil;
     _previousButton = nil;
     _nextButton = nil;
     
@@ -722,7 +722,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
     _toolbar.frame = [self frameForToolbarAtOrientation:currentOrientation];
     
     // Done button
-    _doneButton.frame = [self frameForDoneButtonAtOrientation:currentOrientation];
+    _selectButton.frame = [self frameForDoneButtonAtOrientation:currentOrientation];
     
     
     // Remember index
@@ -775,7 +775,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
     
     // Close button
     if(_displayDoneButton && !self.navigationController.navigationBar)
-        [self.view addSubview:_doneButton];
+        [self.view addSubview:_selectButton];
     
     // Toolbar items & navigation
     UIBarButtonItem *fixedLeftSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
@@ -1123,11 +1123,13 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 
 - (void)updateToolbar {
     // Counter
-	if ([self numberOfPhotos] > 1) {
-		_counterLabel.text = [NSString stringWithFormat:@"%u %@ %lu", _currentPageIndex+1, IDMPhotoBrowserLocalizedStrings(@"of"), (unsigned long)[self numberOfPhotos]];
-	} else {
-		_counterLabel.text = nil;
-	}
+//	if ([self numberOfPhotos] > 1) {
+//		_counterLabel.text = [NSString stringWithFormat:@"%u %@ %lu", _currentPageIndex+1, IDMPhotoBrowserLocalizedStrings(@"of"), (unsigned long)[self numberOfPhotos]];
+//	} else {
+//		_counterLabel.text = nil;
+//	}
+//    
+    _counterLabel.text = nil;
     
 	// Buttons
 	_previousButton.enabled = (_currentPageIndex > 0);
@@ -1175,7 +1177,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
         CGFloat alpha = hidden ? 0 : 1;
         [self.navigationController.navigationBar setAlpha:alpha];
         [_toolbar setAlpha:alpha];
-        [_doneButton setAlpha:alpha];
+        [_selectButton setAlpha:alpha];
         for (UIView *v in captionViews) v.alpha = alpha;
     } completion:^(BOOL finished) {}];
     
@@ -1234,6 +1236,10 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
         [self prepareForClosePhotoBrowser];
         [self dismissPhotoBrowserAnimated:YES];
     }
+}
+
+- (void)selectButtonPressed:(id)sender {
+    
 }
 
 - (void)actionButtonPressed:(id)sender {

@@ -84,7 +84,7 @@
     if(buttonSender.tag == 101)
     {
         photo = [RFLPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo1l" ofType:@"jpg"]];
-        photo.caption = @"Grotto of the Madonna";
+
         [photos addObject:photo];
     }
     
@@ -198,7 +198,7 @@
         if(indexPath.row == 0) // Local Photos
         {
             photo = [RFLPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo1l" ofType:@"jpg"]];
-            photo.caption = @"Grotto of the Madonna";
+            photo.caption = @"";
 			[photos addObject:photo];
            
             photo = [RFLPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo2l" ofType:@"jpg"]];
