@@ -9,25 +9,25 @@
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
 
-#import "IDMPhoto.h"
-#import "IDMPhotoProtocol.h"
-#import "IDMCaptionView.h"
+#import "RFLPhoto.h"
+#import "RFLPhotoProtocol.h"
+#import "RFLCaptionView.h"
 
 // Delgate
-@class IDMPhotoBrowser;
-@protocol IDMPhotoBrowserDelegate <NSObject>
+@class RFLPhotoBrowser;
+@protocol RFLPhotoBrowserDelegate <NSObject>
 @optional
-- (void)photoBrowser:(IDMPhotoBrowser *)photoBrowser didShowPhotoAtIndex:(NSUInteger)index;
-- (void)photoBrowser:(IDMPhotoBrowser *)photoBrowser didDismissAtPageIndex:(NSUInteger)index;
-- (void)photoBrowser:(IDMPhotoBrowser *)photoBrowser didDismissActionSheetWithButtonIndex:(NSUInteger)buttonIndex photoIndex:(NSUInteger)photoIndex;
-- (IDMCaptionView *)photoBrowser:(IDMPhotoBrowser *)photoBrowser captionViewForPhotoAtIndex:(NSUInteger)index;
+- (void)photoBrowser:(RFLPhotoBrowser *)photoBrowser didShowPhotoAtIndex:(NSUInteger)index;
+- (void)photoBrowser:(RFLPhotoBrowser *)photoBrowser didDismissAtPageIndex:(NSUInteger)index;
+- (void)photoBrowser:(RFLPhotoBrowser *)photoBrowser didDismissActionSheetWithButtonIndex:(NSUInteger)buttonIndex photoIndex:(NSUInteger)photoIndex;
+- (RFLCaptionView *)photoBrowser:(RFLPhotoBrowser *)photoBrowser captionViewForPhotoAtIndex:(NSUInteger)index;
 @end
 
 // IDMPhotoBrowser
-@interface IDMPhotoBrowser : UIViewController <UIScrollViewDelegate, UIActionSheetDelegate> 
+@interface RFLPhotoBrowser : UIViewController <UIScrollViewDelegate, UIActionSheetDelegate> 
 
 // Properties
-@property (nonatomic, strong) id <IDMPhotoBrowserDelegate> delegate;
+@property (nonatomic, strong) id <RFLPhotoBrowserDelegate> delegate;
 
 // Toolbar customization
 @property (nonatomic) BOOL displayToolbar;
@@ -77,6 +77,6 @@
 - (void)setInitialPageIndex:(NSUInteger)index;
 
 // Get IDMPhoto at index
-- (id<IDMPhoto>)photoAtIndex:(NSUInteger)index;
+- (id<RFLPhoto>)photoAtIndex:(NSUInteger)index;
 
 @end

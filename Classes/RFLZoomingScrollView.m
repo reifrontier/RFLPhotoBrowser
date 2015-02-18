@@ -6,43 +6,43 @@
 //  Copyright 2010 d3i. All rights reserved.
 //
 
-#import "IDMZoomingScrollView.h"
-#import "IDMPhotoBrowser.h"
-#import "IDMPhoto.h"
+#import "RFLZoomingScrollView.h"
+#import "RFLPhotoBrowser.h"
+#import "RFLPhoto.h"
 
 // Declare private methods of browser
-@interface IDMPhotoBrowser ()
-- (UIImage *)imageForPhoto:(id<IDMPhoto>)photo;
+@interface RFLPhotoBrowser ()
+- (UIImage *)imageForPhoto:(id<RFLPhoto>)photo;
 - (void)cancelControlHiding;
 - (void)hideControlsAfterDelay;
 - (void)toggleControls;
 @end
 
 // Private methods and properties
-@interface IDMZoomingScrollView ()
-@property (nonatomic, weak) IDMPhotoBrowser *photoBrowser;
+@interface RFLZoomingScrollView ()
+@property (nonatomic, weak) RFLPhotoBrowser *photoBrowser;
 - (void)handleSingleTap:(CGPoint)touchPoint;
 - (void)handleDoubleTap:(CGPoint)touchPoint;
 @end
 
-@implementation IDMZoomingScrollView
+@implementation RFLZoomingScrollView
 
 @synthesize photoImageView = _photoImageView, photoBrowser = _photoBrowser, photo = _photo, captionView = _captionView;
 
-- (id)initWithPhotoBrowser:(IDMPhotoBrowser *)browser {
+- (id)initWithPhotoBrowser:(RFLPhotoBrowser *)browser {
     if ((self = [super init])) {
         // Delegate
         self.photoBrowser = browser;
         
 		// Tap view for background
-		_tapView = [[IDMTapDetectingView alloc] initWithFrame:self.bounds];
+		_tapView = [[RFLTapDetectingView alloc] initWithFrame:self.bounds];
 		_tapView.tapDelegate = self;
 		_tapView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		_tapView.backgroundColor = [UIColor clearColor];
 		[self addSubview:_tapView];
         
 		// Image view
-		_photoImageView = [[IDMTapDetectingImageView alloc] initWithFrame:CGRectZero];
+		_photoImageView = [[RFLTapDetectingImageView alloc] initWithFrame:CGRectZero];
 		_photoImageView.tapDelegate = self;
 		_photoImageView.backgroundColor = [UIColor clearColor];
 		[self addSubview:_photoImageView];
@@ -79,7 +79,7 @@
     return self;
 }
 
-- (void)setPhoto:(id<IDMPhoto>)photo {
+- (void)setPhoto:(id<RFLPhoto>)photo {
     _photoImageView.image = nil; // Release image
     if (_photo != photo) {
         _photo = photo;
@@ -137,8 +137,8 @@
 	}
 }
 
-- (void)setProgress:(CGFloat)progress forPhoto:(IDMPhoto*)photo {
-    IDMPhoto *p = (IDMPhoto*)self.photo;
+- (void)setProgress:(CGFloat)progress forPhoto:(RFLPhoto*)photo {
+    RFLPhoto *p = (RFLPhoto*)self.photo;
 
     if ([photo.photoURL.absoluteString isEqualToString:p.photoURL.absoluteString]) {
         if (_progressView.progress < progress) {

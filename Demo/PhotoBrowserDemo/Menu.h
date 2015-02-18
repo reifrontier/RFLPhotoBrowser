@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "IDMPhotoBrowser.h"
+#import "RFLPhotoBrowser.h"
 
-@interface Menu : UITableViewController <IDMPhotoBrowserDelegate>
+@interface Menu : UITableViewController <RFLPhotoBrowserDelegate>
 
 @end

@@ -7,18 +7,18 @@
 //
 
 #import <QuartzCore/QuartzCore.h>
-#import "IDMPhotoBrowser.h"
-#import "IDMZoomingScrollView.h"
+#import "RFLPhotoBrowser.h"
+#import "RFLZoomingScrollView.h"
 
 #import "pop/POP.h"
 
 #ifndef IDMPhotoBrowserLocalizedStrings
 #define IDMPhotoBrowserLocalizedStrings(key) \
-NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"IDMPBLocalizations" ofType:@"bundle"]], nil)
+NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"RFLPBLocalizations" ofType:@"bundle"]], nil)
 #endif
 
 // Private
-@interface IDMPhotoBrowser () {
+@interface RFLPhotoBrowser () {
 	// Data
     NSMutableArray *_photos;
     
@@ -87,10 +87,10 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 // Paging
 - (void)tilePages;
 - (BOOL)isDisplayingPageForIndex:(NSUInteger)index;
-- (IDMZoomingScrollView *)pageDisplayedAtIndex:(NSUInteger)index;
-- (IDMZoomingScrollView *)pageDisplayingPhoto:(id<IDMPhoto>)photo;
-- (IDMZoomingScrollView *)dequeueRecycledPage;
-- (void)configurePage:(IDMZoomingScrollView *)page forIndex:(NSUInteger)index;
+- (RFLZoomingScrollView *)pageDisplayedAtIndex:(NSUInteger)index;
+- (RFLZoomingScrollView *)pageDisplayingPhoto:(id<RFLPhoto>)photo;
+- (RFLZoomingScrollView *)dequeueRecycledPage;
+- (void)configurePage:(RFLZoomingScrollView *)page forIndex:(NSUInteger)index;
 - (void)didStartViewingPageAtIndex:(NSUInteger)index;
 
 // Frames
@@ -100,7 +100,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 - (CGPoint)contentOffsetForPageAtIndex:(NSUInteger)index;
 - (CGRect)frameForToolbarAtOrientation:(UIInterfaceOrientation)orientation;
 - (CGRect)frameForDoneButtonAtOrientation:(UIInterfaceOrientation)orientation;
-- (CGRect)frameForCaptionView:(IDMCaptionView *)captionView atIndex:(NSUInteger)index;
+- (CGRect)frameForCaptionView:(RFLCaptionView *)captionView atIndex:(NSUInteger)index;
 
 // Toolbar
 - (void)updateToolbar;
@@ -119,15 +119,15 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 
 // Data
 - (NSUInteger)numberOfPhotos;
-- (id<IDMPhoto>)photoAtIndex:(NSUInteger)index;
-- (UIImage *)imageForPhoto:(id<IDMPhoto>)photo;
-- (void)loadAdjacentPhotosIfNecessary:(id<IDMPhoto>)photo;
+- (id<RFLPhoto>)photoAtIndex:(NSUInteger)index;
+- (UIImage *)imageForPhoto:(id<RFLPhoto>)photo;
+- (void)loadAdjacentPhotosIfNecessary:(id<RFLPhoto>)photo;
 - (void)releaseAllUnderlyingPhotos;
 
 @end
 
 // IDMPhotoBrowser
-@implementation IDMPhotoBrowser
+@implementation RFLPhotoBrowser
 
 // Properties
 @synthesize displayDoneButton = _displayDoneButton, displayToolbar = _displayToolbar, displayActionButton = _displayActionButton, displayCounterLabel = _displayCounterLabel, useWhiteBackgroundColor = _useWhiteBackgroundColor, doneButtonImage = _doneButtonImage;
@@ -229,7 +229,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 
 - (id)initWithPhotoURLs:(NSArray *)photoURLsArray {
     if ((self = [self init])) {
-        NSArray *photosArray = [IDMPhoto photosWithURLs:photoURLsArray];
+        NSArray *photosArray = [RFLPhoto photosWithURLs:photoURLsArray];
 		_photos = [[NSMutableArray alloc] initWithArray:photosArray];
 	}
 	return self;
@@ -237,7 +237,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 
 - (id)initWithPhotoURLs:(NSArray *)photoURLsArray animatedFromView:(UIView*)view {
     if ((self = [self init])) {
-        NSArray *photosArray = [IDMPhoto photosWithURLs:photoURLsArray];
+        NSArray *photosArray = [RFLPhoto photosWithURLs:photoURLsArray];
 		_photos = [[NSMutableArray alloc] initWithArray:photosArray];
         _senderViewForAnimation = view;
 	}
@@ -267,7 +267,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 
 - (void)panGestureRecognized:(id)sender {
     // Initial Setup
-    IDMZoomingScrollView *scrollView = [self pageDisplayedAtIndex:_currentPageIndex];
+    RFLZoomingScrollView *scrollView = [self pageDisplayedAtIndex:_currentPageIndex];
     //IDMTapDetectingImageView *scrollView.photoImageView = scrollView.photoImageView;
     
     static float firstX, firstY;
@@ -426,7 +426,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
     }
 }
 
-- (void)performCloseAnimationWithScrollView:(IDMZoomingScrollView*)scrollView {
+- (void)performCloseAnimationWithScrollView:(RFLZoomingScrollView*)scrollView {
     float fadeAlpha = 1 - abs(scrollView.frame.origin.y)/scrollView.frame.size.height;
     
     UIImage *imageFromView = [scrollView.photo underlyingImage];
@@ -738,7 +738,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 	_pagingScrollView.contentSize = [self contentSizeForPagingScrollView];
 	
 	// Adjust frames and configuration of each visible page
-	for (IDMZoomingScrollView *page in _visiblePages) {
+	for (RFLZoomingScrollView *page in _visiblePages) {
         NSUInteger index = PAGE_INDEX(page);
 		page.frame = [self frameForPageAtIndex:index];
         page.captionView.frame = [self frameForCaptionView:page.captionView atIndex:index];
@@ -834,18 +834,18 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
     return _photos.count;
 }
 
-- (id<IDMPhoto>)photoAtIndex:(NSUInteger)index {
+- (id<RFLPhoto>)photoAtIndex:(NSUInteger)index {
     return _photos[index];
 }
 
-- (IDMCaptionView *)captionViewForPhotoAtIndex:(NSUInteger)index {
-    IDMCaptionView *captionView = nil;
+- (RFLCaptionView *)captionViewForPhotoAtIndex:(NSUInteger)index {
+    RFLCaptionView *captionView = nil;
     if ([_delegate respondsToSelector:@selector(photoBrowser:captionViewForPhotoAtIndex:)]) {
         captionView = [_delegate photoBrowser:self captionViewForPhotoAtIndex:index];
     } else {
-        id <IDMPhoto> photo = [self photoAtIndex:index];
+        id <RFLPhoto> photo = [self photoAtIndex:index];
         if ([photo respondsToSelector:@selector(caption)]) {
-            if ([photo caption]) captionView = [[IDMCaptionView alloc] initWithPhoto:photo];
+            if ([photo caption]) captionView = [[RFLCaptionView alloc] initWithPhoto:photo];
         }
     }
     captionView.alpha = [self areControlsHidden] ? 0 : 1; // Initial alpha
@@ -853,7 +853,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
     return captionView;
 }
 
-- (UIImage *)imageForPhoto:(id<IDMPhoto>)photo {
+- (UIImage *)imageForPhoto:(id<RFLPhoto>)photo {
 	if (photo) {
 		// Get image or obtain in background
 		if ([photo underlyingImage]) {
@@ -866,15 +866,15 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 	return nil;
 }
 
-- (void)loadAdjacentPhotosIfNecessary:(id<IDMPhoto>)photo {
-    IDMZoomingScrollView *page = [self pageDisplayingPhoto:photo];
+- (void)loadAdjacentPhotosIfNecessary:(id<RFLPhoto>)photo {
+    RFLZoomingScrollView *page = [self pageDisplayingPhoto:photo];
     if (page) {
         // If page is current page then initiate loading of previous and next pages
         NSUInteger pageIndex = PAGE_INDEX(page);
         if (_currentPageIndex == pageIndex) {
             if (pageIndex > 0) {
                 // Preload index - 1
-                id <IDMPhoto> photo = [self photoAtIndex:pageIndex-1];
+                id <RFLPhoto> photo = [self photoAtIndex:pageIndex-1];
                 if (![photo underlyingImage]) {
                     [photo loadUnderlyingImageAndNotify];
                     IDMLog(@"Pre-loading image at index %i", pageIndex-1);
@@ -882,7 +882,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
             }
             if (pageIndex < [self numberOfPhotos] - 1) {
                 // Preload index + 1
-                id <IDMPhoto> photo = [self photoAtIndex:pageIndex+1];
+                id <RFLPhoto> photo = [self photoAtIndex:pageIndex+1];
                 if (![photo underlyingImage]) {
                     [photo loadUnderlyingImageAndNotify];
                     IDMLog(@"Pre-loading image at index %i", pageIndex+1);
@@ -895,8 +895,8 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 #pragma mark - IDMPhoto Loading Notification
 
 - (void)handleIDMPhotoLoadingDidEndNotification:(NSNotification *)notification {
-    id <IDMPhoto> photo = [notification object];
-    IDMZoomingScrollView *page = [self pageDisplayingPhoto:photo];
+    id <RFLPhoto> photo = [notification object];
+    RFLZoomingScrollView *page = [self pageDisplayingPhoto:photo];
     if (page) {
         if ([photo underlyingImage]) {
             // Successful load
@@ -925,7 +925,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 	
 	// Recycle no longer needed pages
     NSInteger pageIndex;
-	for (IDMZoomingScrollView *page in _visiblePages) {
+	for (RFLZoomingScrollView *page in _visiblePages) {
         pageIndex = PAGE_INDEX(page);
 		if (pageIndex < (NSUInteger)iFirstIndex || pageIndex > (NSUInteger)iLastIndex) {
 			[_recycledPages addObject:page];
@@ -942,8 +942,8 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 	for (NSUInteger index = (NSUInteger)iFirstIndex; index <= (NSUInteger)iLastIndex; index++) {
 		if (![self isDisplayingPageForIndex:index]) {
             // Add new page
-			IDMZoomingScrollView *page;
-            page = [[IDMZoomingScrollView alloc] initWithPhotoBrowser:self];
+			RFLZoomingScrollView *page;
+            page = [[RFLZoomingScrollView alloc] initWithPhotoBrowser:self];
             page.backgroundColor = [UIColor clearColor];
             page.opaque = YES;
             
@@ -953,7 +953,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 			IDMLog(@"Added page at index %i", index);
             
             // Add caption
-            IDMCaptionView *captionView = [self captionViewForPhotoAtIndex:index];
+            RFLCaptionView *captionView = [self captionViewForPhotoAtIndex:index];
             captionView.frame = [self frameForCaptionView:captionView atIndex:index];
             [_pagingScrollView addSubview:captionView];
             page.captionView = captionView;
@@ -962,14 +962,14 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 }
 
 - (BOOL)isDisplayingPageForIndex:(NSUInteger)index {
-	for (IDMZoomingScrollView *page in _visiblePages)
+	for (RFLZoomingScrollView *page in _visiblePages)
 		if (PAGE_INDEX(page) == index) return YES;
 	return NO;
 }
 
-- (IDMZoomingScrollView *)pageDisplayedAtIndex:(NSUInteger)index {
-	IDMZoomingScrollView *thePage = nil;
-	for (IDMZoomingScrollView *page in _visiblePages) {
+- (RFLZoomingScrollView *)pageDisplayedAtIndex:(NSUInteger)index {
+	RFLZoomingScrollView *thePage = nil;
+	for (RFLZoomingScrollView *page in _visiblePages) {
 		if (PAGE_INDEX(page) == index) {
 			thePage = page; break;
 		}
@@ -977,9 +977,9 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 	return thePage;
 }
 
-- (IDMZoomingScrollView *)pageDisplayingPhoto:(id<IDMPhoto>)photo {
-	IDMZoomingScrollView *thePage = nil;
-	for (IDMZoomingScrollView *page in _visiblePages) {
+- (RFLZoomingScrollView *)pageDisplayingPhoto:(id<RFLPhoto>)photo {
+	RFLZoomingScrollView *thePage = nil;
+	for (RFLZoomingScrollView *page in _visiblePages) {
 		if (page.photo == photo) {
 			thePage = page; break;
 		}
@@ -987,20 +987,20 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 	return thePage;
 }
 
-- (void)configurePage:(IDMZoomingScrollView *)page forIndex:(NSUInteger)index {
+- (void)configurePage:(RFLZoomingScrollView *)page forIndex:(NSUInteger)index {
 	page.frame = [self frameForPageAtIndex:index];
     page.tag = PAGE_INDEX_TAG_OFFSET + index;
     page.photo = [self photoAtIndex:index];
     
-    __block __weak IDMPhoto *photo = (IDMPhoto*)page.photo;
-    __weak IDMZoomingScrollView* weakPage = page;
+    __block __weak RFLPhoto *photo = (RFLPhoto*)page.photo;
+    __weak RFLZoomingScrollView* weakPage = page;
     photo.progressUpdateBlock = ^(CGFloat progress){
         [weakPage setProgress:progress forPhoto:photo];
     };
 }
 
-- (IDMZoomingScrollView *)dequeueRecycledPage {
-	IDMZoomingScrollView *page = [_recycledPages anyObject];
+- (RFLZoomingScrollView *)dequeueRecycledPage {
+	RFLZoomingScrollView *page = [_recycledPages anyObject];
 	if (page) {
 		[_recycledPages removeObject:page];
 	}
@@ -1011,7 +1011,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 - (void)didStartViewingPageAtIndex:(NSUInteger)index {
     // Load adjacent images if needed and the photo is already
     // loaded. Also called after photo has been loaded in background
-    id <IDMPhoto> currentPhoto = [self photoAtIndex:index];
+    id <RFLPhoto> currentPhoto = [self photoAtIndex:index];
     if ([currentPhoto underlyingImage]) {
         // photo loaded so load ajacent now
         [self loadAdjacentPhotosIfNecessary:currentPhoto];
@@ -1077,7 +1077,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
     return CGRectMake(screenWidth - 75, 30, 55, 26);
 }
 
-- (CGRect)frameForCaptionView:(IDMCaptionView *)captionView atIndex:(NSUInteger)index {
+- (CGRect)frameForCaptionView:(RFLCaptionView *)captionView atIndex:(NSUInteger)index {
     CGRect pageFrame = [self frameForPageAtIndex:index];
     
     CGSize captionSize = [captionView sizeThatFits:CGSizeMake(pageFrame.size.width, 0)];
@@ -1166,7 +1166,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
     
     // Captions
     NSMutableSet *captionViews = [[NSMutableSet alloc] initWithCapacity:_visiblePages.count];
-    for (IDMZoomingScrollView *page in _visiblePages) {
+    for (RFLZoomingScrollView *page in _visiblePages) {
         if (page.captionView) [captionViews addObject:page.captionView];
     }
     
@@ -1226,7 +1226,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 
 - (void)doneButtonPressed:(id)sender {
     if (_senderViewForAnimation && _currentPageIndex == _initalPageIndex) {
-        IDMZoomingScrollView *scrollView = [self pageDisplayedAtIndex:_currentPageIndex];
+        RFLZoomingScrollView *scrollView = [self pageDisplayedAtIndex:_currentPageIndex];
         [self performCloseAnimationWithScrollView:scrollView];
     }
     else {
@@ -1237,7 +1237,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 }
 
 - (void)actionButtonPressed:(id)sender {
-    id <IDMPhoto> photo = [self photoAtIndex:_currentPageIndex];
+    id <RFLPhoto> photo = [self photoAtIndex:_currentPageIndex];
     
     if ([self numberOfPhotos] > 0 && [photo underlyingImage]) {
         if(!_actionButtonTitles)

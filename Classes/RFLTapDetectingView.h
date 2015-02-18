@@ -8,18 +8,18 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol IDMTapDetectingViewDelegate;
+@protocol RFLTapDetectingViewDelegate;
 
-@interface IDMTapDetectingView : UIView {
-	id <IDMTapDetectingViewDelegate> __weak tapDelegate;
+@interface RFLTapDetectingView : UIView {
+	id <RFLTapDetectingViewDelegate> __weak tapDelegate;
 }
-@property (nonatomic, weak) id <IDMTapDetectingViewDelegate> tapDelegate;
+@property (nonatomic, weak) id <RFLTapDetectingViewDelegate> tapDelegate;
 - (void)handleSingleTap:(UITouch *)touch;
 - (void)handleDoubleTap:(UITouch *)touch;
 - (void)handleTripleTap:(UITouch *)touch;
 @end
 
-@protocol IDMTapDetectingViewDelegate <NSObject>
+@protocol RFLTapDetectingViewDelegate <NSObject>
 @optional
 - (void)view:(UIView *)view singleTapDetected:(UITouch *)touch;
 - (void)view:(UIView *)view doubleTapDetected:(UITouch *)touch;

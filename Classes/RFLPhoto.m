@@ -6,11 +6,11 @@
 //  Copyright 2010 d3i. All rights reserved.
 //
 
-#import "IDMPhoto.h"
-#import "IDMPhotoBrowser.h"
+#import "RFLPhoto.h"
+#import "RFLPhotoBrowser.h"
 
 // Private
-@interface IDMPhoto () {
+@interface RFLPhoto () {
     // Image Sources
     NSString *_photoPath;
 
@@ -31,7 +31,7 @@
 @end
 
 // IDMPhoto
-@implementation IDMPhoto
+@implementation RFLPhoto
 
 // Properties
 @synthesize underlyingImage = _underlyingImage, 
@@ -40,16 +40,16 @@ caption = _caption;
 
 #pragma mark Class Methods
 
-+ (IDMPhoto *)photoWithImage:(UIImage *)image {
-	return [[IDMPhoto alloc] initWithImage:image];
++ (RFLPhoto *)photoWithImage:(UIImage *)image {
+	return [[RFLPhoto alloc] initWithImage:image];
 }
 
-+ (IDMPhoto *)photoWithFilePath:(NSString *)path {
-	return [[IDMPhoto alloc] initWithFilePath:path];
++ (RFLPhoto *)photoWithFilePath:(NSString *)path {
+	return [[RFLPhoto alloc] initWithFilePath:path];
 }
 
-+ (IDMPhoto *)photoWithURL:(NSURL *)url {
-	return [[IDMPhoto alloc] initWithURL:url];
++ (RFLPhoto *)photoWithURL:(NSURL *)url {
+	return [[RFLPhoto alloc] initWithURL:url];
 }
 
 + (NSArray *)photosWithImages:(NSArray *)imagesArray {
@@ -57,7 +57,7 @@ caption = _caption;
     
     for (UIImage *image in imagesArray) {
         if ([image isKindOfClass:[UIImage class]]) {
-            IDMPhoto *photo = [IDMPhoto photoWithImage:image];
+            RFLPhoto *photo = [RFLPhoto photoWithImage:image];
             [photos addObject:photo];
         }
     }
@@ -70,7 +70,7 @@ caption = _caption;
     
     for (NSString *path in pathsArray) {
         if ([path isKindOfClass:[NSString class]]) {
-            IDMPhoto *photo = [IDMPhoto photoWithFilePath:path];
+            RFLPhoto *photo = [RFLPhoto photoWithFilePath:path];
             [photos addObject:photo];
         }
     }
@@ -83,11 +83,11 @@ caption = _caption;
     
     for (id url in urlsArray) {
         if ([url isKindOfClass:[NSURL class]]) {
-            IDMPhoto *photo = [IDMPhoto photoWithURL:url];
+            RFLPhoto *photo = [RFLPhoto photoWithURL:url];
             [photos addObject:photo];
         }
         else if ([url isKindOfClass:[NSString class]]) {
-            IDMPhoto *photo = [IDMPhoto photoWithURL:[NSURL URLWithString:url]];
+            RFLPhoto *photo = [RFLPhoto photoWithURL:[NSURL URLWithString:url]];
             [photos addObject:photo];
         }
     }

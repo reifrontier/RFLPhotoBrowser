@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "IDMPBConstants.h"
+#import "RFLPBConstants.h"
 
 // Name of notification used when a photo has completed loading process
 // Used to notify browser display the image
@@ -20,7 +20,7 @@
 //
 // You can see the IDMPhoto class for an example implementation of this protocol
 //
-@protocol IDMPhoto <NSObject>
+@protocol RFLPhoto <NSObject>
 
 @required
 

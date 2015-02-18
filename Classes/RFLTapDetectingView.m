@@ -6,9 +6,9 @@
 //  Copyright 2009 d3i. All rights reserved.
 //
 
-#import "IDMTapDetectingView.h"
+#import "RFLTapDetectingView.h"
 
-@implementation IDMTapDetectingView
+@implementation RFLTapDetectingView
 
 @synthesize tapDelegate;
 

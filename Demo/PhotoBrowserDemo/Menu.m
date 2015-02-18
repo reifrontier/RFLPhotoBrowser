@@ -22,7 +22,7 @@
 
 - (id)initWithStyle:(UITableViewStyle)style {
     if ((self = [super initWithStyle:style])) {
-		self.title = @"IDMPhotoBrowser";
+		self.title = @"RFLPhotoBrowser";
     }
     return self;
 }
@@ -79,36 +79,36 @@
     // Create an array to store IDMPhoto objects
     NSMutableArray *photos = [NSMutableArray new];
     
-    IDMPhoto *photo;
+    RFLPhoto *photo;
     
     if(buttonSender.tag == 101)
     {
-        photo = [IDMPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo1l" ofType:@"jpg"]];
+        photo = [RFLPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo1l" ofType:@"jpg"]];
         photo.caption = @"Grotto of the Madonna";
         [photos addObject:photo];
     }
     
-    photo = [IDMPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo3l" ofType:@"jpg"]];
+    photo = [RFLPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo3l" ofType:@"jpg"]];
     photo.caption = @"York Floods";
     [photos addObject:photo];
     
-    photo = [IDMPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo2l" ofType:@"jpg"]];
+    photo = [RFLPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo2l" ofType:@"jpg"]];
     photo.caption = @"The London Eye is a giant Ferris wheel situated on the banks of the River Thames, in London, England.";
     [photos addObject:photo];
     
-    photo = [IDMPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo4l" ofType:@"jpg"]];
+    photo = [RFLPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo4l" ofType:@"jpg"]];
     photo.caption = @"Campervan";
     [photos addObject:photo];
     
     if(buttonSender.tag == 102)
     {
-        photo = [IDMPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo1l" ofType:@"jpg"]];
+        photo = [RFLPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo1l" ofType:@"jpg"]];
         photo.caption = @"Grotto of the Madonna";
         [photos addObject:photo];
     }
     
     // Create and setup browser
-    IDMPhotoBrowser *browser = [[IDMPhotoBrowser alloc] initWithPhotos:photos animatedFromView:sender]; // using initWithPhotos:animatedFromView: method to use the zoom-in animation
+    RFLPhotoBrowser *browser = [[RFLPhotoBrowser alloc] initWithPhotos:photos animatedFromView:sender]; // using initWithPhotos:animatedFromView: method to use the zoom-in animation
     browser.delegate = self;
     browser.displayActionButton = NO;
     browser.displayArrowButton = YES;
@@ -185,11 +185,11 @@
     // Create an array to store IDMPhoto objects
 	NSMutableArray *photos = [NSMutableArray new];
     
-    IDMPhoto *photo;
+    RFLPhoto *photo;
     
     if(indexPath.section == 0) // Local photo
     {
-        photo = [IDMPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo2l" ofType:@"jpg"]];
+        photo = [RFLPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo2l" ofType:@"jpg"]];
         photo.caption = @"The London Eye is a giant Ferris wheel situated on the banks of the River Thames, in London, England.";
         [photos addObject:photo];
 	}
@@ -197,32 +197,32 @@
     {
         if(indexPath.row == 0) // Local Photos
         {
-            photo = [IDMPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo1l" ofType:@"jpg"]];
+            photo = [RFLPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo1l" ofType:@"jpg"]];
             photo.caption = @"Grotto of the Madonna";
 			[photos addObject:photo];
            
-            photo = [IDMPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo2l" ofType:@"jpg"]];
+            photo = [RFLPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo2l" ofType:@"jpg"]];
             photo.caption = @"The London Eye is a giant Ferris wheel situated on the banks of the River Thames, in London, England.";
 			[photos addObject:photo];
             
-            photo = [IDMPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo3l" ofType:@"jpg"]];
+            photo = [RFLPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo3l" ofType:@"jpg"]];
             photo.caption = @"York Floods";
 			[photos addObject:photo];
             
-            photo = [IDMPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo4l" ofType:@"jpg"]];
+            photo = [RFLPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo4l" ofType:@"jpg"]];
             photo.caption = @"Campervan";
 			[photos addObject:photo];
         }
         else if(indexPath.row == 1 || indexPath.row == 2) // Photos from Flickr or Flickr - Custom
         {
-            NSArray *photosWithURL = [IDMPhoto photosWithURLs:[NSArray arrayWithObjects:[NSURL URLWithString:@"http://farm4.static.flickr.com/3567/3523321514_371d9ac42f_b.jpg"], @"http://farm4.static.flickr.com/3629/3339128908_7aecabc34b_b.jpg", [NSURL URLWithString:@"http://farm4.static.flickr.com/3364/3338617424_7ff836d55f_b.jpg"], @"http://farm4.static.flickr.com/3590/3329114220_5fbc5bc92b_b.jpg", nil]];
+            NSArray *photosWithURL = [RFLPhoto photosWithURLs:[NSArray arrayWithObjects:[NSURL URLWithString:@"http://farm4.static.flickr.com/3567/3523321514_371d9ac42f_b.jpg"], @"http://farm4.static.flickr.com/3629/3339128908_7aecabc34b_b.jpg", [NSURL URLWithString:@"http://farm4.static.flickr.com/3364/3338617424_7ff836d55f_b.jpg"], @"http://farm4.static.flickr.com/3590/3329114220_5fbc5bc92b_b.jpg", nil]];
             
             photos = [NSMutableArray arrayWithArray:photosWithURL];
         }
     }
     
     // Create and setup browser
-    IDMPhotoBrowser *browser = [[IDMPhotoBrowser alloc] initWithPhotos:photos];
+    RFLPhotoBrowser *browser = [[RFLPhotoBrowser alloc] initWithPhotos:photos];
     browser.delegate = self;
     
     if(indexPath.section == 1) // Multiple photos
@@ -256,21 +256,21 @@
 
 #pragma mark - IDMPhotoBrowser Delegate
 
-- (void)photoBrowser:(IDMPhotoBrowser *)photoBrowser didShowPhotoAtIndex:(NSUInteger)pageIndex
+- (void)photoBrowser:(RFLPhotoBrowser *)photoBrowser didShowPhotoAtIndex:(NSUInteger)pageIndex
 {
-    id <IDMPhoto> photo = [photoBrowser photoAtIndex:pageIndex];
+    id <RFLPhoto> photo = [photoBrowser photoAtIndex:pageIndex];
     NSLog(@"Did show photoBrowser with photo index: %d, photo caption: %@", pageIndex, photo.caption);
 }
 
-- (void)photoBrowser:(IDMPhotoBrowser *)photoBrowser didDismissAtPageIndex:(NSUInteger)pageIndex
+- (void)photoBrowser:(RFLPhotoBrowser *)photoBrowser didDismissAtPageIndex:(NSUInteger)pageIndex
 {
-    id <IDMPhoto> photo = [photoBrowser photoAtIndex:pageIndex];
+    id <RFLPhoto> photo = [photoBrowser photoAtIndex:pageIndex];
     NSLog(@"Did dismiss photoBrowser with photo index: %d, photo caption: %@", pageIndex, photo.caption);
 }
 
-- (void)photoBrowser:(IDMPhotoBrowser *)photoBrowser didDismissActionSheetWithButtonIndex:(NSUInteger)buttonIndex photoIndex:(NSUInteger)photoIndex
+- (void)photoBrowser:(RFLPhotoBrowser *)photoBrowser didDismissActionSheetWithButtonIndex:(NSUInteger)buttonIndex photoIndex:(NSUInteger)photoIndex
 {
-    id <IDMPhoto> photo = [photoBrowser photoAtIndex:photoIndex];
+    id <RFLPhoto> photo = [photoBrowser photoAtIndex:photoIndex];
     NSLog(@"Did dismiss actionSheet with photo index: %d, photo caption: %@", photoIndex, photo.caption);
     
     NSString *title = [NSString stringWithFormat:@"Option %d", buttonIndex+1];

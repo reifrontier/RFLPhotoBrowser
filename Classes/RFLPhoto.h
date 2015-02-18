@@ -7,14 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "IDMPhotoProtocol.h"
+#import "RFLPhotoProtocol.h"
 #import "AFNetworking.h"
 
 // This class models a photo/image and it's caption
 // If you want to handle photos, caching, decompression
 // yourself then you can simply ensure your custom data model
 // conforms to IDMPhotoProtocol
-@interface IDMPhoto : NSObject <IDMPhoto>
+@interface RFLPhoto : NSObject <RFLPhoto>
 
 // Progress download block, used to update the circularView
 typedef void (^IDMProgressUpdateBlock)(CGFloat progress);
@@ -25,9 +25,9 @@ typedef void (^IDMProgressUpdateBlock)(CGFloat progress);
 @property (nonatomic, strong) IDMProgressUpdateBlock progressUpdateBlock;
 
 // Class
-+ (IDMPhoto *)photoWithImage:(UIImage *)image;
-+ (IDMPhoto *)photoWithFilePath:(NSString *)path;
-+ (IDMPhoto *)photoWithURL:(NSURL *)url;
++ (RFLPhoto *)photoWithImage:(UIImage *)image;
++ (RFLPhoto *)photoWithFilePath:(NSString *)path;
++ (RFLPhoto *)photoWithURL:(NSURL *)url;
 
 + (NSArray *)photosWithImages:(NSArray *)imagesArray;
 + (NSArray *)photosWithFilePaths:(NSArray *)pathsArray;

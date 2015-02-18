@@ -164,7 +164,7 @@ Example delegate method for custom caption view:
 
 ### Using CocoaPods
 
-Just add `pod 'IDMPhotoBrowser'` to your Podfile.
+Just add `pod 'RFLPhotoBrowser'` to your Podfile.
 
 ### Including Source Directly Into Your Project
 

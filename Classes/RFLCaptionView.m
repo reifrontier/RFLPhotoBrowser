@@ -6,22 +6,22 @@
 //  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "IDMCaptionView.h"
-#import "IDMPhoto.h"
+#import "RFLCaptionView.h"
+#import "RFLPhoto.h"
 #import <QuartzCore/QuartzCore.h>
 
 static const CGFloat labelPadding = 10;
 
 // Private
-@interface IDMCaptionView () {
-    id<IDMPhoto> _photo;
+@interface RFLCaptionView () {
+    id<RFLPhoto> _photo;
     UILabel *_label;    
 }
 @end
 
-@implementation IDMCaptionView
+@implementation RFLCaptionView
 
-- (id)initWithPhoto:(id<IDMPhoto>)photo {
+- (id)initWithPhoto:(id<RFLPhoto>)photo {
     CGRect screenBound = [[UIScreen mainScreen] bounds];
     CGFloat screenWidth = screenBound.size.width;
     

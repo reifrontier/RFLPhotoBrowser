@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "IDMPhotoProtocol.h"
+#import "RFLPhotoProtocol.h"
 
-@interface IDMCaptionView : UIView
+@interface RFLCaptionView : UIView
 
 // Init
-- (id)initWithPhoto:(id<IDMPhoto>)photo;
+- (id)initWithPhoto:(id<RFLPhoto>)photo;
 
 // To create your own custom caption view, subclass this view
 // and override the following two methods (as well as any other
