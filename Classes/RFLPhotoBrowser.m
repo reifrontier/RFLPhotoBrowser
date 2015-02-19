@@ -477,7 +477,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
     } completion:nil];
     
     [UIView animateWithDuration:0.8 animations:^{
-        resizableImageView.layer.cornerRadius = resizableImageView.frame.size.width/3.3;
+        resizableImageView.layer.cornerRadius = resizableImageView.frame.size.width/_resizableImageRadius;
     } completion:nil];
     
     if(_usePopAnimation)

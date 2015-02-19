@@ -93,6 +93,9 @@
 
 - (void)buttonWithImagePressed:(id)sender
 {
+    
+    
+    
     _touched = YES;
     UIButton *buttonSender = (UIButton*)sender;
     POPSpringAnimation *animation = [POPSpringAnimation animation];
@@ -413,9 +416,12 @@
         [photos addObject:photo];
     }
     
+    UIScreen *screen = [UIScreen mainScreen];
+    
     // Create and setup browser
     RFLPhotoBrowser *browser = [[RFLPhotoBrowser alloc] initWithPhotos:photos animatedFromView:button]; // using initWithPhotos:animatedFromView: method to use the zoom-in animation
     browser.delegate = self;
+    browser.resizableImageRadius = [self setResizableImageRadius:screen.bounds.size.width];
     browser.displayActionButton = NO;
     browser.displayArrowButton = NO;
     browser.displayCounterLabel = NO;
@@ -428,6 +434,18 @@
     // Show
     [self presentViewController:browser animated:NO completion:^(void) {
     }];
+}
+
+- (float)setResizableImageRadius:(NSInteger)width
+{
+    if (width == 320) {
+        return 3.3;
+    } else if (width == 375) {
+        return 4.0;
+    } else {
+        return 4.2;
+    }
+    
 }
 
 @end

@@ -62,6 +62,9 @@
 // animation time (default .28)
 @property (nonatomic) float animationDuration;
 
+// custom radius
+@property (nonatomic) float resizableImageRadius;
+
 // Init
 - (id)initWithPhotos:(NSArray *)photosArray;
 

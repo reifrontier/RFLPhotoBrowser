@@ -10,6 +10,12 @@
 #import "RFLPhotoBrowser.h"
 #import "pop/POP.h"
 
+typedef enum {
+    WIDTH_IPHONE5 = 320,
+    WIDTH_IPHONE6 = 344,
+    WIDTH_IPHONE6P = 414,
+} DEVISE_WIDTH;
+
 @interface Menu : UITableViewController <RFLPhotoBrowserDelegate,POPAnimationDelegate>
 
 @end
