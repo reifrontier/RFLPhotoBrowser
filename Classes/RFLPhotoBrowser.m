@@ -231,6 +231,15 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 	return self;
 }
 
+- (id)initWithPhotos:(NSArray *)photosArray animatedFromView:(UIView*)view index:(NSInteger)index {
+    if ((self = [self init])) {
+        _photos = [[NSMutableArray alloc] initWithArray:photosArray];
+        _senderViewForAnimation = view;
+        _currentPageIndex = index;
+    }
+    return self;
+}
+
 - (id)initWithPhotoURLs:(NSArray *)photoURLsArray {
     if ((self = [self init])) {
         NSArray *photosArray = [RFLPhoto photosWithURLs:photoURLsArray];

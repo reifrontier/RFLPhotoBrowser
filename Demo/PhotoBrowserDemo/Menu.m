@@ -419,7 +419,7 @@
     UIScreen *screen = [UIScreen mainScreen];
     
     // Create and setup browser
-    RFLPhotoBrowser *browser = [[RFLPhotoBrowser alloc] initWithPhotos:photos animatedFromView:button]; // using initWithPhotos:animatedFromView: method to use the zoom-in animation
+    RFLPhotoBrowser *browser = [[RFLPhotoBrowser alloc] initWithPhotos:photos animatedFromView:button index:1]; // using initWithPhotos:animatedFromView: method to use the zoom-in animation
     browser.delegate = self;
     browser.resizableImageRadius = [self setResizableImageRadius:screen.bounds.size.width];
     browser.displayActionButton = NO;

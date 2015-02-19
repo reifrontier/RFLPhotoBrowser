@@ -71,6 +71,9 @@
 // Init (animated)
 - (id)initWithPhotos:(NSArray *)photosArray animatedFromView:(UIView*)view;
 
+// With Index
+- (id)initWithPhotos:(NSArray *)photosArray animatedFromView:(UIView*)view index:(NSInteger)index;
+
 // Init with NSURL objects
 - (id)initWithPhotoURLs:(NSArray *)photoURLsArray;
 

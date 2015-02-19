@@ -40,7 +40,6 @@ typedef void (^IDMProgressUpdateBlock)(CGFloat progress);
 - (id)initWithFilePath:(NSString *)path;
 - (id)initWithURL:(NSURL *)url;
 
-- (UIImage *)underlyingImage;
 - (void)loadUnderlyingImageAndNotify;
 - (void)unloadUnderlyingImage;
 
