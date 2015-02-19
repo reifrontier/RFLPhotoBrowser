@@ -21,6 +21,9 @@
 - (void)photoBrowser:(RFLPhotoBrowser *)photoBrowser didDismissAtPageIndex:(NSUInteger)index;
 - (void)photoBrowser:(RFLPhotoBrowser *)photoBrowser didDismissActionSheetWithButtonIndex:(NSUInteger)buttonIndex photoIndex:(NSUInteger)photoIndex;
 - (RFLCaptionView *)photoBrowser:(RFLPhotoBrowser *)photoBrowser captionViewForPhotoAtIndex:(NSUInteger)index;
+//custom
+- (void)photoBrowser:(RFLPhotoBrowser *)photoBrowser didSelectPhotoAtIndex:(NSUInteger)index;
+- (void)photoBrowser:(RFLPhotoBrowser *)photoBrowser didDeSelectPhotoAtIndex:(NSUInteger)index;
 @end
 
 // IDMPhotoBrowser
@@ -41,7 +44,8 @@
 // View customization
 @property (nonatomic) BOOL displayDoneButton;
 @property (nonatomic) BOOL useWhiteBackgroundColor;
-@property (nonatomic, weak) UIImage *doneButtonImage;
+@property (nonatomic, weak) UIImage *selectButtonImage;
+@property (nonatomic, weak) UIImage *selectedButtonImage;
 @property (nonatomic, weak) UIColor *trackTintColor, *progressTintColor;
 
 @property (nonatomic, weak) UIImage *scaleImage;
@@ -77,6 +81,6 @@
 - (void)setInitialPageIndex:(NSUInteger)index;
 
 // Get IDMPhoto at index
-- (id<RFLPhoto>)photoAtIndex:(NSUInteger)index;
+- (RFLPhoto *)photoAtIndex:(NSUInteger)index;
 
 @end

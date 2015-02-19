@@ -18,7 +18,6 @@
     UIImage *_underlyingImage;
 
     // Other
-    NSString *_caption;
     BOOL _loadingInProgress;
 }
 
@@ -34,11 +33,9 @@
 @implementation RFLPhoto
 
 // Properties
-@synthesize underlyingImage = _underlyingImage, 
-photoURL = _photoURL,
-caption = _caption;
+@synthesize underlyingImage = _underlyingImage;
 
-#pragma mark Class Methods
+#pragma mark - Class Methods
 
 + (RFLPhoto *)photoWithImage:(UIImage *)image {
 	return [[RFLPhoto alloc] initWithImage:image];

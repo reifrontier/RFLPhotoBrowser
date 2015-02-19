@@ -18,7 +18,7 @@
 @interface RFLZoomingScrollView : UIScrollView <UIScrollViewDelegate, RFLTapDetectingImageViewDelegate, RFLTapDetectingViewDelegate> {
 	
 	RFLPhotoBrowser *__weak _photoBrowser;
-    id<RFLPhoto> _photo;
+    RFLPhoto *_photo;
 	
     // This view references the related caption view for simplified handling in photo browser
     RFLCaptionView *_captionView;
@@ -30,7 +30,7 @@
 
 @property (nonatomic, strong) RFLTapDetectingImageView *photoImageView;
 @property (nonatomic, strong) RFLCaptionView *captionView;
-@property (nonatomic, strong) id<RFLPhoto> photo;
+@property (nonatomic, strong) RFLPhoto *photo;
 
 - (id)initWithPhotoBrowser:(RFLPhotoBrowser *)browser;
 - (void)displayImage;

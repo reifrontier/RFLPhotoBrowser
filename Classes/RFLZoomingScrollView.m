@@ -12,7 +12,7 @@
 
 // Declare private methods of browser
 @interface RFLPhotoBrowser ()
-- (UIImage *)imageForPhoto:(id<RFLPhoto>)photo;
+- (UIImage *)imageForPhoto:(RFLPhoto *)photo;
 - (void)cancelControlHiding;
 - (void)hideControlsAfterDelay;
 - (void)toggleControls;
@@ -79,7 +79,7 @@
     return self;
 }
 
-- (void)setPhoto:(id<RFLPhoto>)photo {
+- (void)setPhoto:(RFLPhoto *)photo {
     _photoImageView.image = nil; // Release image
     if (_photo != photo) {
         _photo = photo;

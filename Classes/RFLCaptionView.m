@@ -14,14 +14,14 @@ static const CGFloat labelPadding = 10;
 
 // Private
 @interface RFLCaptionView () {
-    id<RFLPhoto> _photo;
+    RFLPhoto *_photo;
     UILabel *_label;    
 }
 @end
 
 @implementation RFLCaptionView
 
-- (id)initWithPhoto:(id<RFLPhoto>)photo {
+- (id)initWithPhoto:(RFLPhoto *)photo {
     CGRect screenBound = [[UIScreen mainScreen] bounds];
     CGFloat screenWidth = screenBound.size.width;
     

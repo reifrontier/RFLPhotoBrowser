@@ -7,6 +7,9 @@
 //
 
 #import "Menu.h"
+#import <QuartzCore/QuartzCore.h>
+
+
 
 @implementation UIAlertView (UIAlertViewWithTitle)
 
@@ -16,7 +19,16 @@
 
 @end
 
+@interface Menu()
+
+@property (nonatomic, strong) UIView *selectedView;
+@property (nonatomic) BOOL touched;
+
+@end
+
+
 @implementation Menu
+
 
 #pragma mark - Initialization
 
@@ -31,6 +43,8 @@
 
 - (void)viewDidLoad
 {
+    _selectedView = nil;
+    _touched = NO;
     [self setupTableViewFooterView];
 }
 
@@ -49,11 +63,16 @@
 
     UIButton *buttonWithImageOnScreen1 = [UIButton buttonWithType:UIButtonTypeCustom];
     buttonWithImageOnScreen1.frame = CGRectMake(15, 0, 640/3 * 0.9, 426/2 * 0.9);
+    buttonWithImageOnScreen1.layer.cornerRadius = buttonWithImageOnScreen1.frame.size.width / 2;
+    buttonWithImageOnScreen1.clipsToBounds = YES;
     buttonWithImageOnScreen1.tag = 101;
     buttonWithImageOnScreen1.adjustsImageWhenHighlighted = NO;
     [buttonWithImageOnScreen1 setImage:[UIImage imageNamed:@"photo1m.jpg"] forState:UIControlStateNormal];
     buttonWithImageOnScreen1.imageView.contentMode = UIViewContentModeScaleAspectFill;
     buttonWithImageOnScreen1.backgroundColor = [UIColor blackColor];
+    [buttonWithImageOnScreen1 addTarget:self action:@selector(buttonWithImagePressed:) forControlEvents:UIControlEventTouchDown];
+    [buttonWithImageOnScreen1 addTarget:self action:@selector(buttonWithImageCanceled:) forControlEvents:UIControlEventTouchCancel];
+    [buttonWithImageOnScreen1 addTarget:self action:@selector(buttonWithImageCanceled:) forControlEvents:UIControlEventTouchUpOutside];
     [buttonWithImageOnScreen1 addTarget:self action:@selector(buttonWithImageOnScreenPressed:) forControlEvents:UIControlEventTouchUpInside];
     [tableViewFooter addSubview:buttonWithImageOnScreen1];
     
@@ -72,53 +91,121 @@
 
 #pragma mark - Actions
 
+- (void)buttonWithImagePressed:(id)sender
+{
+    _touched = YES;
+    UIButton *buttonSender = (UIButton*)sender;
+    POPSpringAnimation *animation = [POPSpringAnimation animation];
+    animation.property = [POPAnimatableProperty propertyWithName:kPOPLayerSize];
+    animation.toValue = [NSValue valueWithCGSize:CGSizeMake(buttonSender.frame.size.width-8, buttonSender.frame.size.width-8)];
+
+    animation.springBounciness = 0.0f;
+    animation.springSpeed = 100.f;
+    
+    [buttonSender.layer pop_addAnimation:animation forKey:@"bound"];
+    
+    [animation setCompletionBlock:^(POPAnimation *animation, BOOL finished) {
+        if (!_touched) {
+            buttonSender.frame = CGRectMake(15, 0, 640/3 * 0.9, 426/2 * 0.9);
+            buttonSender.layer.cornerRadius = buttonSender.frame.size.width / 2;
+            buttonSender.alpha = 1.0;
+        }
+    }];
+}
+
+- (void)buttonWithImageCanceled:(id)sender
+{
+    _touched = NO;
+    UIButton *buttonSender = (UIButton*)sender;
+    buttonSender.frame = CGRectMake(15, 0, 640/3 * 0.9, 426/2 * 0.9);
+    buttonSender.layer.cornerRadius = buttonSender.frame.size.width / 2;
+    buttonSender.alpha = 1.0;
+}
+
 - (void)buttonWithImageOnScreenPressed:(id)sender
 {
+    _touched = NO;
     UIButton *buttonSender = (UIButton*)sender;
     
-    // Create an array to store IDMPhoto objects
-    NSMutableArray *photos = [NSMutableArray new];
+    buttonSender.frame = CGRectMake(15, 0, 640/3 * 0.9, 426/2 * 0.9);
+    buttonSender.layer.cornerRadius = buttonSender.frame.size.width / 2;
+    buttonSender.alpha = 1.0;
     
-    RFLPhoto *photo;
+    [UIView animateWithDuration:0.1
+                          delay:0.1
+                        options:UIViewAnimationOptionCurveEaseOut
+                     animations:^{
+                         buttonSender.frame = CGRectMake(15, 0, 640/3 * 0.9, 426/2 * 0.9);
+                         buttonSender.layer.cornerRadius = buttonSender.frame.size.width / 2;
+                         buttonSender.alpha = 1.0;
+                     }
+                     completion:^(BOOL finished){
+                         [self showDetailPhoto:buttonSender];
+                     }
+     ];
     
-    if(buttonSender.tag == 101)
-    {
-        photo = [RFLPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo1l" ofType:@"jpg"]];
+//    _selectedView = buttonSender;
+//    
+//    POPSpringAnimation *animation = [POPSpringAnimation animation];
+//    animation.property = [POPAnimatableProperty propertyWithName:kPOPLayerSize];
+//    animation.toValue = [NSValue valueWithCGSize:CGSizeMake(buttonSender.frame.size.width-6, buttonSender.frame.size.width-6)];
+//
+//    animation.springBounciness = 20.0f;
+//    animation.springSpeed = 8.f;
+//    
+//    [buttonSender.layer pop_addAnimation:animation forKey:@"bound"];
+//    
+//    [animation setCompletionBlock:^(POPAnimation *animation, BOOL finished) {
+//        
+//        
+//    }];
 
-        [photos addObject:photo];
-    }
+
+//    POPCustomAnimation *animationD = [POPCustomAnimation animationWithBlock:
+//                                      ^BOOL(id target, POPCustomAnimation *animation) {
+//                                          float t = (animation.currentTime-animation.beginTime)/duration;
+//                                          
+//                                          float d = 8/pow(2, floor(log2(1 + 11*(1-t))));
+//                                          float timing = pow(t*11/4-3*(1-1/d), 2) + (1-1/d)*(1+1/d);
+//                                          
+//                                          UIView *view = (UIView *)target;
+//                                          CGSize size = view.frame.size;
+//                                          
+////                                          CGRect after = CGRectMake(fromValue.x + timing * dx, fromValue.y + timing * dy, size.width, size.height);
+//                                          CGRect after = CGRectMake(view.frame.origin.x,view.frame.origin.y, size.width + timing * dW, size.height + timing * dH);
+//                                          
+//                                          view.layer.cornerRadius = (size.width +timing * dW) /2;
+//                                          
+//                                          [view setFrame:after];
+//                                          
+//                                          return t < 1.0;
+//                                      }];
+//    [buttonSender pop_addAnimation:animationD forKey:@"bound"];
+
+//    POPSpringAnimation *animationRa = [POPSpringAnimation animation];
+//    animationRa.property = [POPAnimatableProperty propertyWithName:kPOPLayerCornerRadius];
+//    animationRa.toValue = [NSValue valueWithCGSize:CGSizeMake(buttonSender.frame.size.width-20, buttonSender.frame.size.width-20)];
+//    animationRa.delegate = self;
+//    animationRa.springBounciness = 20.0f;
+//    animationRa.springSpeed = 2.0f;
+//    
+//    [buttonSender pop_addAnimation:animationRa forKey:@"bound"];
     
-    photo = [RFLPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo3l" ofType:@"jpg"]];
-    photo.caption = @"York Floods";
-    [photos addObject:photo];
     
-    photo = [RFLPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo2l" ofType:@"jpg"]];
-    photo.caption = @"The London Eye is a giant Ferris wheel situated on the banks of the River Thames, in London, England.";
-    [photos addObject:photo];
+//    [UIView animateWithDuration:0.1
+//                          delay:0.0
+//                        options:UIViewAnimationOptionCurveEaseOut
+//                     animations:^{
+//                         buttonSender.transform = CGAffineTransformMakeScale(0.8, 0.8);
+//        
+//                     }
+//                     completion:^(BOOL finished){
+//                         
+//                         
+//                     }
+//    ];
     
-    photo = [RFLPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo4l" ofType:@"jpg"]];
-    photo.caption = @"Campervan";
-    [photos addObject:photo];
-    
-    if(buttonSender.tag == 102)
-    {
-        photo = [RFLPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo1l" ofType:@"jpg"]];
-        photo.caption = @"Grotto of the Madonna";
-        [photos addObject:photo];
-    }
-    
-    // Create and setup browser
-    RFLPhotoBrowser *browser = [[RFLPhotoBrowser alloc] initWithPhotos:photos animatedFromView:sender]; // using initWithPhotos:animatedFromView: method to use the zoom-in animation
-    browser.delegate = self;
-    browser.displayActionButton = NO;
-    browser.displayArrowButton = YES;
-    browser.displayCounterLabel = YES;
-    browser.usePopAnimation = YES;
-    browser.scaleImage = buttonSender.currentImage;
-    if(buttonSender.tag == 102) browser.useWhiteBackgroundColor = YES;
-    
-    // Show
-    [self presentViewController:browser animated:YES completion:nil];
+
 }
 
 #pragma mark - TableView DataSource
@@ -230,7 +317,7 @@
         if(indexPath.row == 1) // Photos from Flickr
         {
             browser.displayCounterLabel = YES;
-            browser.displayActionButton = NO;
+            browser.displayActionButton = YES;
         }
         else if(indexPath.row == 2) // Photos from Flickr - Custom
         {
@@ -241,7 +328,8 @@
             browser.rightArrowImage         = [UIImage imageNamed:@"IDMPhotoBrowser_customArrowRight.png"];
             browser.leftArrowSelectedImage  = [UIImage imageNamed:@"IDMPhotoBrowser_customArrowLeftSelected.png"];
             browser.rightArrowSelectedImage = [UIImage imageNamed:@"IDMPhotoBrowser_customArrowRightSelected.png"];
-            browser.doneButtonImage         = [UIImage imageNamed:@"IDMPhotoBrowser_customDoneButton.png"];
+            browser.selectButtonImage       = [UIImage imageNamed:@"pin.png"];
+            browser.selectedButtonImage     = [UIImage imageNamed:@"pin_selected"];
             browser.view.tintColor          = [UIColor orangeColor];
             browser.progressTintColor       = [UIColor orangeColor];
             browser.trackTintColor          = [UIColor colorWithWhite:0.8 alpha:1];
@@ -258,23 +346,88 @@
 
 - (void)photoBrowser:(RFLPhotoBrowser *)photoBrowser didShowPhotoAtIndex:(NSUInteger)pageIndex
 {
-    id <RFLPhoto> photo = [photoBrowser photoAtIndex:pageIndex];
-    NSLog(@"Did show photoBrowser with photo index: %d, photo caption: %@", pageIndex, photo.caption);
+    RFLPhoto *photo = [photoBrowser photoAtIndex:pageIndex];
+    NSLog(@"Did show photoBrowser with photo index: %ld, photo caption: %@", pageIndex, photo.caption);
 }
 
 - (void)photoBrowser:(RFLPhotoBrowser *)photoBrowser didDismissAtPageIndex:(NSUInteger)pageIndex
 {
-    id <RFLPhoto> photo = [photoBrowser photoAtIndex:pageIndex];
-    NSLog(@"Did dismiss photoBrowser with photo index: %d, photo caption: %@", pageIndex, photo.caption);
+    RFLPhoto *photo = [photoBrowser photoAtIndex:pageIndex];
+    NSLog(@"Did dismiss photoBrowser with photo index: %ld, photo caption: %@", pageIndex, photo.caption);
 }
 
 - (void)photoBrowser:(RFLPhotoBrowser *)photoBrowser didDismissActionSheetWithButtonIndex:(NSUInteger)buttonIndex photoIndex:(NSUInteger)photoIndex
 {
-    id <RFLPhoto> photo = [photoBrowser photoAtIndex:photoIndex];
-    NSLog(@"Did dismiss actionSheet with photo index: %d, photo caption: %@", photoIndex, photo.caption);
+    RFLPhoto *photo = [photoBrowser photoAtIndex:photoIndex];
+    NSLog(@"Did dismiss actionSheet with photo index: %ld, photo caption: %@", photoIndex, photo.caption);
     
-    NSString *title = [NSString stringWithFormat:@"Option %d", buttonIndex+1];
+    NSString *title = [NSString stringWithFormat:@"Option %ld", buttonIndex+1];
     [UIAlertView showAlertViewWithTitle:title];
+}
+
+- (void)photoBrowser:(RFLPhotoBrowser *)photoBrowser didSelectPhotoAtIndex:(NSUInteger)index
+{
+    //unselected の　状態から　selected へ currentIndex 以外は unselected
+    //assetsの中身を変更する
+    RFLPhoto *photo = [photoBrowser photoAtIndex:index];
+    NSLog(@"didSelectPhotoAtIndex %ld, photo caption: %@", index, photo.photoURL);
+}
+
+- (void)photoBrowser:(RFLPhotoBrowser *)photoBrowser didDeSelectPhotoAtIndex:(NSUInteger)index
+{
+    //selected の　状態から　unselected へ currentIndex 以外も　unselected
+    RFLPhoto *photo = [photoBrowser photoAtIndex:index];
+    NSLog(@"didDeSelectPhotoAtIndex %ld, photo caption: %@", index, photo.photoURL);
+}
+
+- (void)showDetailPhoto:(UIButton *)button
+{
+    NSMutableArray *photos = [NSMutableArray new];
+    
+    RFLPhoto *photo;
+    
+    if(button.tag == 101)
+    {
+        photo = [RFLPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo1l" ofType:@"jpg"]];
+        
+        [photos addObject:photo];
+    }
+    
+    photo = [RFLPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo3l" ofType:@"jpg"]];
+    photo.caption = @"";
+    [photos addObject:photo];
+    
+    photo = [RFLPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo2l" ofType:@"jpg"]];
+    photo.caption = @"";
+    [photos addObject:photo];
+    
+    photo = [RFLPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo4l" ofType:@"jpg"]];
+    photo.caption = @"";
+    photo.isSelected = true;
+    [photos addObject:photo];
+    
+    if(button.tag == 102)
+    {
+        photo = [RFLPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo1l" ofType:@"jpg"]];
+        photo.caption = @"";
+        [photos addObject:photo];
+    }
+    
+    // Create and setup browser
+    RFLPhotoBrowser *browser = [[RFLPhotoBrowser alloc] initWithPhotos:photos animatedFromView:button]; // using initWithPhotos:animatedFromView: method to use the zoom-in animation
+    browser.delegate = self;
+    browser.displayActionButton = NO;
+    browser.displayArrowButton = NO;
+    browser.displayCounterLabel = NO;
+    browser.usePopAnimation = YES;
+    browser.selectButtonImage       = [UIImage imageNamed:@"pin.png"];
+    browser.selectedButtonImage     = [UIImage imageNamed:@"pin_selected"];
+    browser.scaleImage = button.currentImage;
+    if(button.tag == 102) browser.useWhiteBackgroundColor = YES;
+    
+    // Show
+    [self presentViewController:browser animated:NO completion:^(void) {
+    }];
 }
 
 @end

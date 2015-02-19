@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "RFLPhotoBrowser.h"
+#import "pop/POP.h"
 
-@interface Menu : UITableViewController <RFLPhotoBrowserDelegate>
+@interface Menu : UITableViewController <RFLPhotoBrowserDelegate,POPAnimationDelegate>
 
 @end
