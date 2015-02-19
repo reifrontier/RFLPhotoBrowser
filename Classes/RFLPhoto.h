@@ -14,12 +14,13 @@
 // If you want to handle photos, caching, decompression
 // yourself then you can simply ensure your custom data model
 // conforms to IDMPhotoProtocol
-@interface RFLPhoto : NSObject <RFLPhoto>
+@interface RFLPhoto : NSObject
 
 // Progress download block, used to update the circularView
 typedef void (^IDMProgressUpdateBlock)(CGFloat progress);
 
 // Properties
+@property (nonatomic, strong) UIImage *underlyingImage;
 @property (nonatomic, strong) NSString *caption;
 @property (nonatomic, strong) NSURL *photoURL;
 @property (nonatomic, strong) IDMProgressUpdateBlock progressUpdateBlock;
@@ -38,6 +39,10 @@ typedef void (^IDMProgressUpdateBlock)(CGFloat progress);
 - (id)initWithImage:(UIImage *)image;
 - (id)initWithFilePath:(NSString *)path;
 - (id)initWithURL:(NSURL *)url;
+
+- (UIImage *)underlyingImage;
+- (void)loadUnderlyingImageAndNotify;
+- (void)unloadUnderlyingImage;
 
 @end
 

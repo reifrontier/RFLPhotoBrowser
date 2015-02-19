@@ -255,7 +255,11 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 }
 
 - (void)releaseAllUnderlyingPhotos {
-    for (id p in _photos) { if (p != [NSNull null]) [p unloadUnderlyingImage]; } // Release photos
+    for (RFLPhoto *p in _photos) {
+        if (p != nil) {
+            [p unloadUnderlyingImage];
+        }
+    }
 }
 
 - (void)didReceiveMemoryWarning {

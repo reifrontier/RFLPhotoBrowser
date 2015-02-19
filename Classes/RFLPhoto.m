@@ -15,14 +15,10 @@
     NSString *_photoPath;
 
     // Image
-    UIImage *_underlyingImage;
 
     // Other
     BOOL _loadingInProgress;
 }
-
-// Properties
-@property (nonatomic, strong) UIImage *underlyingImage;
 
 // Methods
 - (void)imageLoadingComplete;
@@ -31,9 +27,6 @@
 
 // IDMPhoto
 @implementation RFLPhoto
-
-// Properties
-@synthesize underlyingImage = _underlyingImage;
 
 #pragma mark - Class Methods
 
