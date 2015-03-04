@@ -76,6 +76,8 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 	// iOS 7
     UIViewController *_applicationTopViewController;
     int _previousModalPresentationStyle;
+    
+    NSDictionary *_indexDict;
 }
 
 // Private Properties
@@ -240,6 +242,18 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
     return self;
 }
 
+- (id)initWithPhotos:(NSArray *)photosArray animatedFromView:(UIView*)view index:(NSInteger)index indexes:(NSDictionary *)indexes
+{
+    if ((self = [self init])) {
+        _photos = [[NSMutableArray alloc] initWithArray:photosArray];
+        _senderViewForAnimation = view;
+        _currentPageIndex = index;
+        _initalPageIndex = index;
+        _indexDict = indexes;
+    }
+    return self;
+}
+
 - (id)initWithPhotoURLs:(NSArray *)photoURLsArray {
     if ((self = [self init])) {
         NSArray *photosArray = [RFLPhoto photosWithURLs:photoURLsArray];
@@ -301,7 +315,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
         firstX = [scrollView center].x;
         firstY = [scrollView center].y;
         
-        _senderViewForAnimation.hidden = (_currentPageIndex == _initalPageIndex);
+        //_senderViewForAnimation.hidden = (_currentPageIndex == _initalPageIndex);
         
         _isdraggingPhoto = YES;
         [self setNeedsStatusBarAppearanceUpdate];
@@ -321,7 +335,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
     if ([(UIPanGestureRecognizer*)sender state] == UIGestureRecognizerStateEnded) {
         if(scrollView.center.y > viewHalfHeight+40 || scrollView.center.y < viewHalfHeight-40) // Automatic Dismiss View
         {
-            if (_senderViewForAnimation && _currentPageIndex == _initalPageIndex) {
+            if (_senderViewForAnimation) {
                 [self performCloseAnimationWithScrollView:scrollView];
                 return;
             }
@@ -436,6 +450,9 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
         [self animateView:resizableImageView
                   toFrame:finalImageViewFrame
                completion:completion];
+        [UIView animateWithDuration:_animationDuration animations:^{
+            resizableImageView.layer.cornerRadius = 0;
+        } completion:nil];
     }
     else
     {
@@ -489,15 +506,19 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
         self.view.backgroundColor = [UIColor clearColor];
     } completion:nil];
     
-    [UIView animateWithDuration:0.8 animations:^{
-        resizableImageView.layer.cornerRadius = resizableImageView.frame.size.width/_resizableImageRadius;
-    } completion:nil];
+    if (_currentPageIndex != _initalPageIndex) {
+
+    }
     
     if(_usePopAnimation)
     {
         [self animateView:resizableImageView
                   toFrame:_senderViewOriginalFrame
                completion:completion];
+        
+        [UIView animateWithDuration:0.8 animations:^{
+            resizableImageView.layer.cornerRadius = resizableImageView.frame.size.width/_resizableImageRadius;
+        } completion:nil];
     }
     else
     {
@@ -575,6 +596,19 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
     
     self.view.clipsToBounds = YES;
     
+    CAGradientLayer *gradient = [CAGradientLayer layer];
+    
+    CGRect frame = self.view.frame;
+    frame.size.height = 118;
+    gradient.frame = frame;
+    
+    gradient.colors = @[
+                        (id)[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6].CGColor,
+                        (id)[UIColor colorWithRed:0 green:0 blue:0 alpha:0.0].CGColor
+                        ];
+    
+    [self.view.layer insertSublayer:gradient atIndex:0];
+    
 	// Setup paging scrolling view
 	CGRect pagingScrollViewFrame = [self frameForPagingScrollView];
 	_pagingScrollView = [[UIScrollView alloc] initWithFrame:pagingScrollViewFrame];
@@ -604,19 +638,12 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
     [_selectButton setAlpha:1.0f];
     [_selectButton addTarget:self action:@selector(selectButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     
-    if(!_selectButtonImage) {
-        [self setSelectButtonTitle:@"Select" color:UNSELECTED_COLOR];
-        [_selectButton.titleLabel setFont:[UIFont boldSystemFontOfSize:11.0f]];
-        _selectButton.layer.cornerRadius = 3.0f;
-        _selectButton.layer.borderColor = [UIColor colorWithWhite:0.9 alpha:0.9].CGColor;
-        _selectButton.layer.borderWidth = 1.0f;
-    }
-    else {
-        [_selectButton setBackgroundImage:_selectButtonImage forState:UIControlStateNormal];
-        [_selectButton setBackgroundImage:_selectedButtonImage forState:UIControlStateHighlighted];
-        [_selectButton setBackgroundImage:_selectedButtonImage forState:UIControlStateSelected];
-        _selectButton.contentMode = UIViewContentModeScaleAspectFit;
-    }
+
+    [_selectButton setBackgroundImage:[UIImage imageNamed:@"RFLPhotoBrowser.bundle/images/rfl_close_white"] forState:UIControlStateNormal];
+    [_selectButton setBackgroundImage:[UIImage imageNamed:@"RFLPhotoBrowser.bundle/images/rfl_close_white"] forState:UIControlStateHighlighted];
+    [_selectButton setBackgroundImage:[UIImage imageNamed:@"RFLPhotoBrowser.bundle/images/rfl_close_white"] forState:UIControlStateSelected];
+    _selectButton.contentMode = UIViewContentModeScaleAspectFit;
+
     
     UIImage *leftButtonImage = (_leftArrowImage == nil) ?
     [UIImage imageNamed:@"RFLPhotoBrowser.bundle/images/IDMPhotoBrowser_arrowLeft.png"]          : _leftArrowImage;
@@ -710,12 +737,12 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 }
 
 #pragma mark - Select Button
-- (void)setSelectButtonTitle:(NSString *)title color:(UIColor *)color
-{
-    [_selectButton setTitleColor:[UIColor colorWithWhite:0.9 alpha:0.9] forState:UIControlStateNormal|UIControlStateHighlighted];
-    [_selectButton setTitle:IDMPhotoBrowserLocalizedStrings(title) forState:UIControlStateNormal];
-    [_selectButton setBackgroundColor:color];
-}
+//- (void)setSelectButtonTitle:(NSString *)title color:(UIColor *)color
+//{
+//    [_selectButton setTitleColor:[UIColor colorWithWhite:0.9 alpha:0.9] forState:UIControlStateNormal|UIControlStateHighlighted];
+//    [_selectButton setTitle:IDMPhotoBrowserLocalizedStrings(title) forState:UIControlStateNormal];
+//    [_selectButton setBackgroundColor:color];
+//}
 
 #pragma mark - Status Bar
 
@@ -1057,21 +1084,21 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
         [_delegate photoBrowser:self didShowPhotoAtIndex:index];
     }
     
-    if (currentPhoto.isSelected) {
-        if (!_selectButtonImage) {
-            [self setSelectButtonTitle:@"Selected" color:SELECTED_COLOR];
-        } else {
-            _selectButton.selected = YES;
-        }
-        
-    } else {
-        
-        if (!_selectButtonImage) {
-            [self setSelectButtonTitle:@"Select" color:UNSELECTED_COLOR];
-        } else {
-            _selectButton.selected = NO;
-        }
-    }
+//    if (currentPhoto.isSelected) {
+//        if (!_selectButtonImage) {
+//            [self setSelectButtonTitle:@"Selected" color:SELECTED_COLOR];
+//        } else {
+//            _selectButton.selected = YES;
+//        }
+//        
+//    } else {
+//        
+//        if (!_selectButtonImage) {
+//            [self setSelectButtonTitle:@"Select" color:UNSELECTED_COLOR];
+//        } else {
+//            _selectButton.selected = NO;
+//        }
+//    }
 }
 
 #pragma mark - Frame Calculations
@@ -1127,7 +1154,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
     
     // if ([self isLandscape:orientation]) screenWidth = screenBound.size.height;
     
-    return CGRectMake(screenWidth - 75, 30, 55, 26);
+    return CGRectMake(screenWidth - 46, 17, 27, 27);
 }
 
 - (CGRect)frameForCaptionView:(RFLCaptionView *)captionView atIndex:(NSUInteger)index {
@@ -1280,7 +1307,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 #pragma mark - Buttons
 
 - (void)doneButtonPressed:(id)sender {
-    if (_senderViewForAnimation && _currentPageIndex == _initalPageIndex) {
+    if (_senderViewForAnimation) {
         RFLZoomingScrollView *scrollView = [self pageDisplayedAtIndex:_currentPageIndex];
         [self performCloseAnimationWithScrollView:scrollView];
     }
@@ -1293,37 +1320,46 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 
 - (void)selectButtonPressed:(id)sender
 {
-    RFLPhoto *currentPhoto = [self photoAtIndex:_currentPageIndex];
-    
-    if (currentPhoto.isSelected) {
-        currentPhoto.isSelected = false;
-        
-        if (!_selectButtonImage) {
-            [self setSelectButtonTitle:@"Select" color:UNSELECTED_COLOR];
-        } else {
-            _selectButton.selected = NO;
-        }
-        
-        
-        if ([_delegate respondsToSelector:@selector(photoBrowser:didDeSelectPhotoAtIndex:)]) {
-            [_delegate photoBrowser:self didDeSelectPhotoAtIndex:_currentPageIndex];
-        }
-    } else {
-        for (RFLPhoto *photo in _photos) {
-            photo.isSelected = false;
-        }
-        currentPhoto.isSelected = true;
-        
-        if (!_selectButtonImage) {
-            [self setSelectButtonTitle:@"Selected" color:SELECTED_COLOR];
-        } else {
-            _selectButton.selected = YES;
-        }
-        
-        if ([_delegate respondsToSelector:@selector(photoBrowser:didSelectPhotoAtIndex:)]) {
-            [_delegate photoBrowser:self didSelectPhotoAtIndex:_currentPageIndex];
-        }
+    if (_senderViewForAnimation) {
+        RFLZoomingScrollView *scrollView = [self pageDisplayedAtIndex:_currentPageIndex];
+        [self performCloseAnimationWithScrollView:scrollView];
     }
+    else {
+        _senderViewForAnimation.hidden = NO;
+        [self prepareForClosePhotoBrowser];
+        [self dismissPhotoBrowserAnimated:YES];
+    }
+//    RFLPhoto *currentPhoto = [self photoAtIndex:_currentPageIndex];
+//    
+//    if (currentPhoto.isSelected) {
+//        currentPhoto.isSelected = false;
+//        
+//        if (!_selectButtonImage) {
+//            [self setSelectButtonTitle:@"Select" color:UNSELECTED_COLOR];
+//        } else {
+//            _selectButton.selected = NO;
+//        }
+//        
+//        
+//        if ([_delegate respondsToSelector:@selector(photoBrowser:didDeSelectPhotoAtIndex:)]) {
+//            [_delegate photoBrowser:self didDeSelectPhotoAtIndex:_currentPageIndex];
+//        }
+//    } else {
+//        for (RFLPhoto *photo in _photos) {
+//            photo.isSelected = false;
+//        }
+//        currentPhoto.isSelected = true;
+//        
+//        if (!_selectButtonImage) {
+//            [self setSelectButtonTitle:@"Selected" color:SELECTED_COLOR];
+//        } else {
+//            _selectButton.selected = YES;
+//        }
+//        
+//        if ([_delegate respondsToSelector:@selector(photoBrowser:didSelectPhotoAtIndex:)]) {
+//            [_delegate photoBrowser:self didSelectPhotoAtIndex:_currentPageIndex];
+//        }
+//    }
 }
 
 - (void)actionButtonPressed:(id)sender {
