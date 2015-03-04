@@ -10,6 +10,11 @@
 #import "RFLPhotoProtocol.h"
 #import "AFNetworking.h"
 
+typedef enum {
+    RFL_ASSET_PHOTO,
+    RFL_ASSET_MOV,
+} RFL_ASSET_TYPE;
+
 // This class models a photo/image and it's caption
 // If you want to handle photos, caching, decompression
 // yourself then you can simply ensure your custom data model
@@ -23,8 +28,10 @@ typedef void (^IDMProgressUpdateBlock)(CGFloat progress);
 @property (nonatomic, strong) UIImage *underlyingImage;
 @property (nonatomic, strong) NSString *caption;
 @property (nonatomic, strong) NSURL *photoURL;
+@property (nonatomic, strong) NSURL *assetURL;
 @property (nonatomic, strong) IDMProgressUpdateBlock progressUpdateBlock;
 @property (nonatomic) BOOL isSelected;
+@property (nonatomic) RFL_ASSET_TYPE assetType;
 
 // Class
 + (RFLPhoto *)photoWithImage:(UIImage *)image;
@@ -44,4 +51,3 @@ typedef void (^IDMProgressUpdateBlock)(CGFloat progress);
 - (void)unloadUnderlyingImage;
 
 @end
-
