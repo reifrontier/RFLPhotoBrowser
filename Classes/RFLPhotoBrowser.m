@@ -77,7 +77,8 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
     UIViewController *_applicationTopViewController;
     int _previousModalPresentationStyle;
     
-    NSDictionary *_indexDict;
+    AVPlayerLayer *_playerLayer;
+    AVPlayer *_player;
 }
 
 // Private Properties
@@ -238,6 +239,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
         _photos = [[NSMutableArray alloc] initWithArray:photosArray];
         _senderViewForAnimation = view;
         _currentPageIndex = index;
+        _initalPageIndex = index;
     }
     return self;
 }
@@ -249,7 +251,6 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
         _senderViewForAnimation = view;
         _currentPageIndex = index;
         _initalPageIndex = index;
-        _indexDict = indexes;
     }
     return self;
 }
@@ -315,7 +316,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
         firstX = [scrollView center].x;
         firstY = [scrollView center].y;
         
-        //_senderViewForAnimation.hidden = (_currentPageIndex == _initalPageIndex);
+        _senderViewForAnimation.hidden = (_currentPageIndex == _initalPageIndex);
         
         _isdraggingPhoto = YES;
         [self setNeedsStatusBarAppearanceUpdate];
@@ -467,6 +468,11 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 - (void)performCloseAnimationWithScrollView:(RFLZoomingScrollView*)scrollView {
     float fadeAlpha = 1 - abs(scrollView.frame.origin.y)/scrollView.frame.size.height;
     
+    if(_initalPageIndex != _currentPageIndex) {
+        NSInteger result = (_currentPageIndex - _initalPageIndex) * 180;
+        _senderViewOriginalFrame.origin.y = _senderViewOriginalFrame.origin.y + result;
+    }
+    
     UIImage *imageFromView = [scrollView.photo underlyingImage];
     //imageFromView = [self rotateImageToCurrentOrientation:imageFromView];
     
@@ -498,7 +504,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
         [resizableImageView removeFromSuperview];
         
         [self prepareForClosePhotoBrowser];
-        [self dismissPhotoBrowserAnimated:YES];
+        [self dismissPhotoBrowserAnimated:NO];
     };
     
     [UIView animateWithDuration:_animationDuration animations:^{

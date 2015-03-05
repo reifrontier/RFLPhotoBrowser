@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "RFLPhotoProtocol.h"
 #import "AFNetworking.h"
+#import <AssetsLibrary/AssetsLibrary.h>
 
 typedef enum {
     RFL_ASSET_PHOTO,
@@ -32,11 +33,13 @@ typedef void (^IDMProgressUpdateBlock)(CGFloat progress);
 @property (nonatomic, strong) IDMProgressUpdateBlock progressUpdateBlock;
 @property (nonatomic) BOOL isSelected;
 @property (nonatomic) RFL_ASSET_TYPE assetType;
+@property (nonatomic, strong) ALAsset *photoAsset;
 
 // Class
 + (RFLPhoto *)photoWithImage:(UIImage *)image;
 + (RFLPhoto *)photoWithFilePath:(NSString *)path;
 + (RFLPhoto *)photoWithURL:(NSURL *)url;
++ (RFLPhoto *)photoWithAsset:(ALAsset *)asset;
 
 + (NSArray *)photosWithImages:(NSArray *)imagesArray;
 + (NSArray *)photosWithFilePaths:(NSArray *)pathsArray;

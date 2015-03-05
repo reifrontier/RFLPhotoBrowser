@@ -400,6 +400,66 @@
     photo.caption = @"";
     [photos addObject:photo];
     
+    photo = [RFLPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo3l" ofType:@"jpg"]];
+    photo.caption = @"";
+    [photos addObject:photo];
+    
+    photo = [RFLPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo3l" ofType:@"jpg"]];
+    photo.caption = @"";
+    [photos addObject:photo];
+    
+    photo = [RFLPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo3l" ofType:@"jpg"]];
+    photo.caption = @"";
+    [photos addObject:photo];
+    
+    photo = [RFLPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo3l" ofType:@"jpg"]];
+    photo.caption = @"";
+    [photos addObject:photo];
+    
+    photo = [RFLPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo3l" ofType:@"jpg"]];
+    photo.caption = @"";
+    [photos addObject:photo];
+    
+    photo = [RFLPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo3l" ofType:@"jpg"]];
+    photo.caption = @"";
+    [photos addObject:photo];
+    
+    photo = [RFLPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo3l" ofType:@"jpg"]];
+    photo.caption = @"";
+    [photos addObject:photo];
+    
+    photo = [RFLPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo3l" ofType:@"jpg"]];
+    photo.caption = @"";
+    [photos addObject:photo];
+    
+    photo = [RFLPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo3l" ofType:@"jpg"]];
+    photo.caption = @"";
+    [photos addObject:photo];
+    
+    photo = [RFLPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo3l" ofType:@"jpg"]];
+    photo.caption = @"";
+    [photos addObject:photo];
+    
+    photo = [RFLPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo3l" ofType:@"jpg"]];
+    photo.caption = @"";
+    [photos addObject:photo];
+    
+    photo = [RFLPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo3l" ofType:@"jpg"]];
+    photo.caption = @"";
+    [photos addObject:photo];
+    
+    photo = [RFLPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo3l" ofType:@"jpg"]];
+    photo.caption = @"";
+    [photos addObject:photo];
+    
+    photo = [RFLPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo3l" ofType:@"jpg"]];
+    photo.caption = @"";
+    [photos addObject:photo];
+    
+    photo = [RFLPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo3l" ofType:@"jpg"]];
+    photo.caption = @"";
+    [photos addObject:photo];
+    
     photo = [RFLPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo2l" ofType:@"jpg"]];
     photo.caption = @"";
     [photos addObject:photo];

@@ -42,6 +42,11 @@
     return [[RFLPhoto alloc] initWithURL:url];
 }
 
++ (RFLPhoto *)photoWithAsset:(ALAsset *)asset {
+    return [[RFLPhoto alloc] initWithAsset:asset];
+}
+
+
 + (NSArray *)photosWithImages:(NSArray *)imagesArray {
     NSMutableArray *photos = [NSMutableArray arrayWithCapacity:imagesArray.count];
     
@@ -108,6 +113,13 @@
     return self;
 }
 
+- (id)initWithAsset:(ALAsset *)asset {
+    if ((self = [super init])) {
+        _photoAsset = asset;
+    }
+    return self;
+}
+
 #pragma mark IDMPhoto Protocol Methods
 
 - (void)loadUnderlyingImageAndNotify {
@@ -120,6 +132,8 @@
         if (_photoPath) {
             // Load async from file
             [self performSelectorInBackground:@selector(loadImageFromFileAsync) withObject:nil];
+        } else if (_photoAsset) {
+            [self performSelectorInBackground:@selector(loadImageFromAssetAsync) withObject:nil];
         } else if (_photoURL) {
             // Load async from web (using AFNetworking)
             NSURLRequest *request = [[NSURLRequest alloc] initWithURL:_photoURL
@@ -260,6 +274,25 @@
     @autoreleasepool {
         @try {
             self.underlyingImage = [UIImage imageWithContentsOfFile:_photoPath];
+            if (!_underlyingImage) {
+                //IDMLog(@"Error loading photo from path: %@", _photoPath);
+            }
+        } @finally {
+            self.underlyingImage = [self decodedImageWithImage: self.underlyingImage];
+            [self performSelectorOnMainThread:@selector(imageLoadingComplete) withObject:nil waitUntilDone:NO];
+        }
+    }
+}
+
+- (void)loadImageFromAssetAsync {
+    @autoreleasepool {
+        @try {
+            ALAssetRepresentation *representation = [_photoAsset defaultRepresentation];
+            CGImageRef fullScreenImageRef = [representation fullScreenImage];
+            
+            self.underlyingImage = [UIImage imageWithCGImage:fullScreenImageRef
+                                                       scale:[representation scale]
+                                                 orientation:0];
             if (!_underlyingImage) {
                 //IDMLog(@"Error loading photo from path: %@", _photoPath);
             }

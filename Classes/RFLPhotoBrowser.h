@@ -13,6 +13,8 @@
 #import "RFLPhotoProtocol.h"
 #import "RFLCaptionView.h"
 
+#import <AVFoundation/AVFoundation.h>
+
 // Delgate
 @class RFLPhotoBrowser;
 @protocol RFLPhotoBrowserDelegate <NSObject>
