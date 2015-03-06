@@ -22,6 +22,7 @@
 		4C6F97D814AF760500F8389A /* photo3m.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4C6F97D014AF760500F8389A /* photo3m.jpg */; };
 		4C6F97D914AF760500F8389A /* photo4l.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4C6F97D114AF760500F8389A /* photo4l.jpg */; };
 		4C6F97DA14AF760500F8389A /* photo4m.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4C6F97D214AF760500F8389A /* photo4m.jpg */; };
+		8038C3F01AA9B18900439567 /* RFLPhotoBrowserBackButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 8038C3EF1AA9B18900439567 /* RFLPhotoBrowserBackButton.m */; };
 		807C696E1AA7F4D500360D7B /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 807C696D1AA7F4D500360D7B /* AssetsLibrary.framework */; };
 		807C69701AA7F9B600360D7B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 807C696F1AA7F9B600360D7B /* AVFoundation.framework */; };
 		808B8D3F1A9469A9006690C0 /* RFLPBLocalizations.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 808B8D3D1A9469A9006690C0 /* RFLPBLocalizations.bundle */; };
@@ -81,6 +82,8 @@
 		4C6F97D114AF760500F8389A /* photo4l.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = photo4l.jpg; path = Photos/photo4l.jpg; sourceTree = "<group>"; };
 		4C6F97D214AF760500F8389A /* photo4m.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = photo4m.jpg; path = Photos/photo4m.jpg; sourceTree = "<group>"; };
 		5D818B0CD136F8001380E936 /* Pods-PhotoBrowserDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhotoBrowserDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PhotoBrowserDemo/Pods-PhotoBrowserDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		8038C3EE1AA9B18900439567 /* RFLPhotoBrowserBackButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RFLPhotoBrowserBackButton.h; sourceTree = "<group>"; };
+		8038C3EF1AA9B18900439567 /* RFLPhotoBrowserBackButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RFLPhotoBrowserBackButton.m; sourceTree = "<group>"; };
 		807C696D1AA7F4D500360D7B /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		807C696F1AA7F9B600360D7B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		808B8D3B1A946757006690C0 /* RFLPBConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RFLPBConstants.h; sourceTree = "<group>"; };
@@ -279,6 +282,8 @@
 				D1574959178DB94900B0211A /* RFLTapDetectingView.m */,
 				D157495A178DB94900B0211A /* RFLZoomingScrollView.h */,
 				D157495B178DB94900B0211A /* RFLZoomingScrollView.m */,
+				8038C3EE1AA9B18900439567 /* RFLPhotoBrowserBackButton.h */,
+				8038C3EF1AA9B18900439567 /* RFLPhotoBrowserBackButton.m */,
 			);
 			name = Classes;
 			path = ../Classes;
@@ -431,6 +436,7 @@
 				4C6F97B314AF737E00F8389A /* Menu.m in Sources */,
 				D1574968178DB94900B0211A /* RFLCaptionView.m in Sources */,
 				D1574969178DB94900B0211A /* RFLPhoto.m in Sources */,
+				8038C3F01AA9B18900439567 /* RFLPhotoBrowserBackButton.m in Sources */,
 				D157496B178DB94900B0211A /* RFLPhotoBrowser.m in Sources */,
 				D157496C178DB94900B0211A /* RFLTapDetectingImageView.m in Sources */,
 				D157496D178DB94900B0211A /* RFLTapDetectingView.m in Sources */,

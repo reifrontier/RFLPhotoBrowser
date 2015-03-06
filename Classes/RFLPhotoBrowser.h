@@ -15,6 +15,8 @@
 
 #import <AVFoundation/AVFoundation.h>
 
+#import "RFLPhotoBrowserBackButton.h"
+
 // Delgate
 @class RFLPhotoBrowser;
 @protocol RFLPhotoBrowserDelegate <NSObject>

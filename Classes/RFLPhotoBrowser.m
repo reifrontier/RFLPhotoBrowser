@@ -37,7 +37,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
     NSUInteger _currentPageIndex;
 	
     // Buttons
-    UIButton *_selectButton;
+    RFLPhotoBrowserBackButton *_selectButton;
     
 	// Toolbar
 	UIToolbar *_toolbar;
@@ -639,9 +639,10 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
                       barMetrics:UIBarMetricsDefault];
     
     // Close Button
-    _selectButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    _selectButton = [RFLPhotoBrowserBackButton buttonWithType:UIButtonTypeCustom];
     [_selectButton setFrame:[self frameForDoneButtonAtOrientation:currentOrientation]];
     [_selectButton setAlpha:1.0f];
+    _selectButton.tappableInsets = UIEdgeInsetsMake(-20, -20, -20, -20);
     [_selectButton addTarget:self action:@selector(selectButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     
 
