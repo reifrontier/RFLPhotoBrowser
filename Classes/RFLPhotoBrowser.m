@@ -337,6 +337,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
         if(scrollView.center.y > viewHalfHeight+40 || scrollView.center.y < viewHalfHeight-40) // Automatic Dismiss View
         {
             if (_senderViewForAnimation) {
+                [self willDismissPhotoBrowserWithGesture:YES];
                 [self performCloseAnimationWithScrollView:scrollView];
                 return;
             }
@@ -546,6 +547,13 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
     
     // Controls
     [NSObject cancelPreviousPerformRequestsWithTarget:self]; // Cancel any pending toggles from taps
+}
+
+- (void)willDismissPhotoBrowserWithGesture:(BOOL)gesture
+{
+    if ([_delegate respondsToSelector:@selector(photoBrowser:willDismissWithGesture:)]) {
+        [_delegate photoBrowser:self willDismissWithGesture:gesture];
+    }
 }
 
 - (void)dismissPhotoBrowserAnimated:(BOOL)animated {
@@ -1327,6 +1335,8 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 
 - (void)selectButtonPressed:(id)sender
 {
+    [self willDismissPhotoBrowserWithGesture:NO];
+    
     if (_senderViewForAnimation) {
         RFLZoomingScrollView *scrollView = [self pageDisplayedAtIndex:_currentPageIndex];
         [self performCloseAnimationWithScrollView:scrollView];

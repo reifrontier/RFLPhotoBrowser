@@ -22,6 +22,7 @@
 @protocol RFLPhotoBrowserDelegate <NSObject>
 @optional
 - (void)photoBrowser:(RFLPhotoBrowser *)photoBrowser didShowPhotoAtIndex:(NSUInteger)index;
+- (void)photoBrowser:(RFLPhotoBrowser *)photoBrowser willDismissWithGesture:(BOOL)gesture;
 - (void)photoBrowser:(RFLPhotoBrowser *)photoBrowser didDismissAtPageIndex:(NSUInteger)index;
 - (void)photoBrowser:(RFLPhotoBrowser *)photoBrowser didDismissActionSheetWithButtonIndex:(NSUInteger)buttonIndex photoIndex:(NSUInteger)photoIndex;
 - (RFLCaptionView *)photoBrowser:(RFLPhotoBrowser *)photoBrowser captionViewForPhotoAtIndex:(NSUInteger)index;
