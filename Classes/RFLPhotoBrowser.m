@@ -1392,11 +1392,19 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
             self.activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
             
             __typeof__(self) __weak selfBlock = self;
-            [self.activityViewController setCompletionWithItemsHandler:^
-             (NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError) {
-                 [selfBlock hideControlsAfterDelay];
-                 selfBlock.activityViewController = nil;
-             }];
+            
+            if (SYSTEM_VERSION_GREATER_THAN(@"8.0")) {
+                [self.activityViewController setCompletionWithItemsHandler:^
+                 (NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError) {
+                     [selfBlock hideControlsAfterDelay];
+                     selfBlock.activityViewController = nil;
+                 }];
+            } else {
+                [self.activityViewController setCompletionHandler:^(NSString *activityType, BOOL completed) {
+                    [selfBlock hideControlsAfterDelay];
+                    selfBlock.activityViewController = nil;
+                }];
+            }
             
             [self presentViewController:self.activityViewController animated:YES completion:nil];
         }
