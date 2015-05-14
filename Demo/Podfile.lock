@@ -26,7 +26,16 @@ PODS:
 DEPENDENCIES:
   - AFNetworking
   - DACircularProgress
-  - pop
+  - pop (from `https://github.com/facebook/pop.git`)
+
+EXTERNAL SOURCES:
+  pop:
+    :git: https://github.com/facebook/pop.git
+
+CHECKOUT OPTIONS:
+  pop:
+    :commit: 038f29b2de47db3fce803c5a180eee604ebe1977
+    :git: https://github.com/facebook/pop.git
 
 SPEC CHECKSUMS:
   AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
