@@ -524,7 +524,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
                completion:completion];
         
         [UIView animateWithDuration:0.8 animations:^{
-            resizableImageView.layer.cornerRadius = resizableImageView.frame.size.width/_resizableImageRadius;
+            resizableImageView.layer.cornerRadius = CGRectGetWidth(_senderViewOriginalFrame) * 0.5f;
         } completion:nil];
     }
     else
@@ -648,18 +648,17 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
     
     // Close Button
     _selectButton = [RFLPhotoBrowserBackButton buttonWithType:UIButtonTypeCustom];
+    _selectButton.backgroundColor = [UIColor colorWithWhite:1.000 alpha:0.100];
+    _selectButton.layer.cornerRadius = 10.0f;
     [_selectButton setFrame:[self frameForDoneButtonAtOrientation:currentOrientation]];
     [_selectButton setAlpha:1.0f];
-    _selectButton.tappableInsets = UIEdgeInsetsMake(-20, -20, -20, -20);
     [_selectButton addTarget:self action:@selector(selectButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    
+    UIImage *imageForClose = [UIImage imageNamed:@"RFLPhotoBrowser.bundle/images/rfl_close_white"];
+    [_selectButton setImage:imageForClose forState:UIControlStateNormal];
+    _selectButton.imageEdgeInsets = UIEdgeInsetsMake(8.0f, 0.0f, 8.0f, 0.0f);
+    _selectButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
 
-    [_selectButton setBackgroundImage:[UIImage imageNamed:@"RFLPhotoBrowser.bundle/images/rfl_close_white"] forState:UIControlStateNormal];
-    [_selectButton setBackgroundImage:[UIImage imageNamed:@"RFLPhotoBrowser.bundle/images/rfl_close_white"] forState:UIControlStateHighlighted];
-    [_selectButton setBackgroundImage:[UIImage imageNamed:@"RFLPhotoBrowser.bundle/images/rfl_close_white"] forState:UIControlStateSelected];
-    _selectButton.contentMode = UIViewContentModeScaleAspectFit;
 
-    
     UIImage *leftButtonImage = (_leftArrowImage == nil) ?
     [UIImage imageNamed:@"RFLPhotoBrowser.bundle/images/IDMPhotoBrowser_arrowLeft.png"]          : _leftArrowImage;
     
@@ -1164,12 +1163,13 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 }
 
 - (CGRect)frameForDoneButtonAtOrientation:(UIInterfaceOrientation)orientation {
-    CGRect screenBound = self.view.bounds;
-    CGFloat screenWidth = screenBound.size.width;
+    CGRect windowFrame = self.view.bounds;
+    __unused CGFloat windowWidth = CGRectGetWidth(windowFrame);
+    __unused CGFloat windowHeight = CGRectGetHeight(windowFrame);
     
     // if ([self isLandscape:orientation]) screenWidth = screenBound.size.height;
     
-    return CGRectMake(screenWidth - 46, 17, 27, 27);
+    return CGRectMake(30.0f, windowHeight - 38.0f, 90.0f, 36.0f);
 }
 
 - (CGRect)frameForCaptionView:(RFLCaptionView *)captionView atIndex:(NSUInteger)index {
